@@ -18,8 +18,8 @@
 		D06788DE15E6A22B006FAE24 /* lwApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D06788DC15E6A22B006FAE24 /* lwApp.cpp */; };
 		D06788EA15E6B416006FAE24 /* lwTask.h in Headers */ = {isa = PBXBuildFile; fileRef = D06788E815E6B415006FAE24 /* lwTask.h */; };
 		D06788EB15E6B416006FAE24 /* lwTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D06788E915E6B415006FAE24 /* lwTask.cpp */; };
-		D06788EE15E6C9A3006FAE24 /* lwTextureRes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D06788EC15E6C9A3006FAE24 /* lwTextureRes.cpp */; };
-		D06788EF15E6C9A3006FAE24 /* lwTextureRes.h in Headers */ = {isa = PBXBuildFile; fileRef = D06788ED15E6C9A3006FAE24 /* lwTextureRes.h */; };
+		D06788EE15E6C9A3006FAE24 /* lwTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D06788EC15E6C9A3006FAE24 /* lwTexture.cpp */; };
+		D06788EF15E6C9A3006FAE24 /* lwTexture.h in Headers */ = {isa = PBXBuildFile; fileRef = D06788ED15E6C9A3006FAE24 /* lwTexture.h */; };
 		D06788FD15E6CBB6006FAE24 /* image_DXT.c in Sources */ = {isa = PBXBuildFile; fileRef = D06788F315E6CBB6006FAE24 /* image_DXT.c */; };
 		D06788FE15E6CBB6006FAE24 /* image_DXT.h in Headers */ = {isa = PBXBuildFile; fileRef = D06788F415E6CBB6006FAE24 /* image_DXT.h */; };
 		D06788FF15E6CBB6006FAE24 /* image_helper.c in Sources */ = {isa = PBXBuildFile; fileRef = D06788F515E6CBB6006FAE24 /* image_helper.c */; };
@@ -132,6 +132,12 @@
 		D06789D915E6CBBD006FAE24 /* vector_traits.h in Headers */ = {isa = PBXBuildFile; fileRef = D067897315E6CBBD006FAE24 /* vector_traits.h */; };
 		D06789DA15E6CBBD006FAE24 /* vector_unroller.h in Headers */ = {isa = PBXBuildFile; fileRef = D067897415E6CBBD006FAE24 /* vector_unroller.h */; };
 		D06789DB15E6CBBD006FAE24 /* vector.h in Headers */ = {isa = PBXBuildFile; fileRef = D067897515E6CBBD006FAE24 /* vector.h */; };
+		D0678A0A15E80A9F006FAE24 /* lwSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0678A0815E80A9F006FAE24 /* lwSprite.cpp */; };
+		D0678A0B15E80A9F006FAE24 /* lwSprite.h in Headers */ = {isa = PBXBuildFile; fileRef = D0678A0915E80A9F006FAE24 /* lwSprite.h */; };
+		D0678A0E15E80E60006FAE24 /* lwColor.h in Headers */ = {isa = PBXBuildFile; fileRef = D0678A0D15E80E60006FAE24 /* lwColor.h */; };
+		D0678A1015E80E85006FAE24 /* lwColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0678A0F15E80E85006FAE24 /* lwColor.cpp */; };
+		D0678A2A15E8E6E3006FAE24 /* lwShader.h in Headers */ = {isa = PBXBuildFile; fileRef = D0678A2815E8E6E3006FAE24 /* lwShader.h */; };
+		D0678A2B15E8E6E3006FAE24 /* lwShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0678A2915E8E6E3006FAE24 /* lwShader.cpp */; };
 		D0CB112C15E68525003DF8B6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0CB112B15E68525003DF8B6 /* Foundation.framework */; };
 		D0CB113B15E6865D003DF8B6 /* lwLog.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CB113915E6865D003DF8B6 /* lwLog.h */; };
 /* End PBXBuildFile section */
@@ -148,8 +154,8 @@
 		D06788DC15E6A22B006FAE24 /* lwApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwApp.cpp; sourceTree = "<group>"; };
 		D06788E815E6B415006FAE24 /* lwTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwTask.h; sourceTree = "<group>"; };
 		D06788E915E6B415006FAE24 /* lwTask.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwTask.cpp; sourceTree = "<group>"; };
-		D06788EC15E6C9A3006FAE24 /* lwTextureRes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwTextureRes.cpp; sourceTree = "<group>"; };
-		D06788ED15E6C9A3006FAE24 /* lwTextureRes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwTextureRes.h; sourceTree = "<group>"; };
+		D06788EC15E6C9A3006FAE24 /* lwTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwTexture.cpp; sourceTree = "<group>"; };
+		D06788ED15E6C9A3006FAE24 /* lwTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwTexture.h; sourceTree = "<group>"; };
 		D06788F315E6CBB6006FAE24 /* image_DXT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = image_DXT.c; sourceTree = "<group>"; };
 		D06788F415E6CBB6006FAE24 /* image_DXT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_DXT.h; sourceTree = "<group>"; };
 		D06788F515E6CBB6006FAE24 /* image_helper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = image_helper.c; sourceTree = "<group>"; };
@@ -262,6 +268,12 @@
 		D067897315E6CBBD006FAE24 /* vector_traits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector_traits.h; sourceTree = "<group>"; };
 		D067897415E6CBBD006FAE24 /* vector_unroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector_unroller.h; sourceTree = "<group>"; };
 		D067897515E6CBBD006FAE24 /* vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector.h; sourceTree = "<group>"; };
+		D0678A0815E80A9F006FAE24 /* lwSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwSprite.cpp; sourceTree = "<group>"; };
+		D0678A0915E80A9F006FAE24 /* lwSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwSprite.h; sourceTree = "<group>"; };
+		D0678A0D15E80E60006FAE24 /* lwColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwColor.h; sourceTree = "<group>"; };
+		D0678A0F15E80E85006FAE24 /* lwColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwColor.cpp; sourceTree = "<group>"; };
+		D0678A2815E8E6E3006FAE24 /* lwShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwShader.h; sourceTree = "<group>"; };
+		D0678A2915E8E6E3006FAE24 /* lwShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwShader.cpp; sourceTree = "<group>"; };
 		D0CB112815E68525003DF8B6 /* liblwtf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblwtf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0CB112B15E68525003DF8B6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D0CB112F15E68525003DF8B6 /* stdafx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stdafx.h; sourceTree = "<group>"; };
@@ -500,8 +512,14 @@
 		D0CB112D15E68525003DF8B6 /* lwtf */ = {
 			isa = PBXGroup;
 			children = (
-				D06788EC15E6C9A3006FAE24 /* lwTextureRes.cpp */,
-				D06788ED15E6C9A3006FAE24 /* lwTextureRes.h */,
+				D0678A2815E8E6E3006FAE24 /* lwShader.h */,
+				D0678A2915E8E6E3006FAE24 /* lwShader.cpp */,
+				D0678A0F15E80E85006FAE24 /* lwColor.cpp */,
+				D0678A0D15E80E60006FAE24 /* lwColor.h */,
+				D0678A0815E80A9F006FAE24 /* lwSprite.cpp */,
+				D0678A0915E80A9F006FAE24 /* lwSprite.h */,
+				D06788EC15E6C9A3006FAE24 /* lwTexture.cpp */,
+				D06788ED15E6C9A3006FAE24 /* lwTexture.h */,
 				D06788E815E6B415006FAE24 /* lwTask.h */,
 				D06788E915E6B415006FAE24 /* lwTask.cpp */,
 				D06788DB15E6A22B006FAE24 /* lwApp.h */,
@@ -542,7 +560,7 @@
 				D06788CB15E69804006FAE24 /* lwRes.h in Headers */,
 				D06788DD15E6A22B006FAE24 /* lwApp.h in Headers */,
 				D06788EA15E6B416006FAE24 /* lwTask.h in Headers */,
-				D06788EF15E6C9A3006FAE24 /* lwTextureRes.h in Headers */,
+				D06788EF15E6C9A3006FAE24 /* lwTexture.h in Headers */,
 				D06788FE15E6CBB6006FAE24 /* image_DXT.h in Headers */,
 				D067890015E6CBB6006FAE24 /* image_helper.h in Headers */,
 				D067890215E6CBB6006FAE24 /* SOIL.h in Headers */,
@@ -651,6 +669,9 @@
 				D06789D915E6CBBD006FAE24 /* vector_traits.h in Headers */,
 				D06789DA15E6CBBD006FAE24 /* vector_unroller.h in Headers */,
 				D06789DB15E6CBBD006FAE24 /* vector.h in Headers */,
+				D0678A0B15E80A9F006FAE24 /* lwSprite.h in Headers */,
+				D0678A0E15E80E60006FAE24 /* lwColor.h in Headers */,
+				D0678A2A15E8E6E3006FAE24 /* lwShader.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -708,11 +729,14 @@
 				D0527AAD15E68F0800191554 /* lwUtil.mm in Sources */,
 				D06788DE15E6A22B006FAE24 /* lwApp.cpp in Sources */,
 				D06788EB15E6B416006FAE24 /* lwTask.cpp in Sources */,
-				D06788EE15E6C9A3006FAE24 /* lwTextureRes.cpp in Sources */,
+				D06788EE15E6C9A3006FAE24 /* lwTexture.cpp in Sources */,
 				D06788FD15E6CBB6006FAE24 /* image_DXT.c in Sources */,
 				D06788FF15E6CBB6006FAE24 /* image_helper.c in Sources */,
 				D067890115E6CBB6006FAE24 /* SOIL.c in Sources */,
 				D067890315E6CBB6006FAE24 /* stb_image_aug.c in Sources */,
+				D0678A0A15E80A9F006FAE24 /* lwSprite.cpp in Sources */,
+				D0678A1015E80E85006FAE24 /* lwColor.cpp in Sources */,
+				D0678A2B15E8E6E3006FAE24 /* lwShader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

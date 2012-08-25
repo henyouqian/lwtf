@@ -88,7 +88,7 @@ namespace lw {
     }
     
     void Task::draw(){
-        if ( _state == RUNNING && !_isVisible ){
+        if ( _state == RUNNING && _isVisible ){
             vDraw();
         }
     }
