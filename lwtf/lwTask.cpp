@@ -42,12 +42,13 @@ namespace lw {
         std::list<Task*>::iterator it = _tasks.begin();
         std::list<Task*>::iterator itend = _tasks.end();
         for ( ; it != itend; ++it ){
-            (*it)->draw();
+            (*it)->updateState();
         }
+        
         
         it = _tasks.begin();
         for ( ; it != itend; ++it ){
-            (*it)->updateState();
+            (*it)->draw();
         }
     }
     

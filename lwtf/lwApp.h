@@ -12,6 +12,12 @@ namespace lw {
         
         void main();
         void draw();
+        
+        void setViewSize(float w, float h);
+        void getViewSize(float &w, float &h);
+        
+    private:
+        float _viewW, _viewH;
     };
     
 } //namespace lw
