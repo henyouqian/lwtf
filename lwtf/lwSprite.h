@@ -57,7 +57,7 @@ namespace lw{
     };
     
     void spriteInit();
-    void spriteClean();
+    void spriteExit();
     void spriteFlush();
 	
 } //namespace lw

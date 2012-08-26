@@ -125,7 +125,7 @@ namespace lw {
     
     Sprite::Sprite(const char *file, bool &ok){
         ok = false;
-        _pTextureRes = TextureRes::create(file, false, false, false);
+        _pTextureRes = TextureRes::create(file);
         if ( _pTextureRes ){
             ok = true;
             _ancX = _ancY = 0.f;
@@ -334,7 +334,7 @@ namespace lw {
         _pvb = new SpriteVertexBuffer();
     }
     
-    void spriteClean(){
+    void spriteExit(){
         if ( _pvb ){
             delete _pvb;
             _pvb = NULL;

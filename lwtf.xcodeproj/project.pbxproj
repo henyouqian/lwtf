@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		D030879115EA40BA0031D5D4 /* lwTouchEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D030878D15EA40BA0031D5D4 /* lwTouchEvent.cpp */; };
 		D030879215EA40BA0031D5D4 /* lwTouchEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = D030878E15EA40BA0031D5D4 /* lwTouchEvent.h */; };
+		D03087AE15EA66230031D5D4 /* lwSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03087AC15EA66230031D5D4 /* lwSound.cpp */; };
+		D03087AF15EA66230031D5D4 /* lwSound.h in Headers */ = {isa = PBXBuildFile; fileRef = D03087AD15EA66230031D5D4 /* lwSound.h */; };
 		D0527AA615E68EA200191554 /* lwFileSys.h in Headers */ = {isa = PBXBuildFile; fileRef = D0527AA215E68EA200191554 /* lwFileSys.h */; };
 		D0527AA715E68EA200191554 /* lwPreInclude.h in Headers */ = {isa = PBXBuildFile; fileRef = D0527AA315E68EA200191554 /* lwPreInclude.h */; };
 		D0527AA815E68EA200191554 /* lwSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = D0527AA415E68EA200191554 /* lwSingleton.h */; };
@@ -142,11 +144,25 @@
 		D0678A2B15E8E6E3006FAE24 /* lwShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0678A2915E8E6E3006FAE24 /* lwShader.cpp */; };
 		D0CB112C15E68525003DF8B6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0CB112B15E68525003DF8B6 /* Foundation.framework */; };
 		D0CB113B15E6865D003DF8B6 /* lwLog.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CB113915E6865D003DF8B6 /* lwLog.h */; };
+		D0F9B65915EA83270029146E /* alut.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F9B64D15EA83270029146E /* alut.h */; };
+		D0F9B65A15EA83270029146E /* alutBufferData.c in Sources */ = {isa = PBXBuildFile; fileRef = D0F9B64E15EA83270029146E /* alutBufferData.c */; };
+		D0F9B65B15EA83270029146E /* alutCodec.c in Sources */ = {isa = PBXBuildFile; fileRef = D0F9B64F15EA83270029146E /* alutCodec.c */; };
+		D0F9B65C15EA83270029146E /* alutError.c in Sources */ = {isa = PBXBuildFile; fileRef = D0F9B65015EA83270029146E /* alutError.c */; };
+		D0F9B65D15EA83270029146E /* alutInit.c in Sources */ = {isa = PBXBuildFile; fileRef = D0F9B65115EA83270029146E /* alutInit.c */; };
+		D0F9B65E15EA83270029146E /* alutInputStream.c in Sources */ = {isa = PBXBuildFile; fileRef = D0F9B65215EA83270029146E /* alutInputStream.c */; };
+		D0F9B65F15EA83270029146E /* alutInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F9B65315EA83270029146E /* alutInternal.h */; };
+		D0F9B66015EA83270029146E /* alutLoader.c in Sources */ = {isa = PBXBuildFile; fileRef = D0F9B65415EA83270029146E /* alutLoader.c */; };
+		D0F9B66115EA83270029146E /* alutOutputStream.c in Sources */ = {isa = PBXBuildFile; fileRef = D0F9B65515EA83270029146E /* alutOutputStream.c */; };
+		D0F9B66215EA83270029146E /* alutUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = D0F9B65615EA83270029146E /* alutUtil.c */; };
+		D0F9B66315EA83270029146E /* alutVersion.c in Sources */ = {isa = PBXBuildFile; fileRef = D0F9B65715EA83270029146E /* alutVersion.c */; };
+		D0F9B66415EA83270029146E /* alutWaveform.c in Sources */ = {isa = PBXBuildFile; fileRef = D0F9B65815EA83270029146E /* alutWaveform.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D030878D15EA40BA0031D5D4 /* lwTouchEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwTouchEvent.cpp; sourceTree = "<group>"; };
 		D030878E15EA40BA0031D5D4 /* lwTouchEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwTouchEvent.h; sourceTree = "<group>"; };
+		D03087AC15EA66230031D5D4 /* lwSound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwSound.cpp; sourceTree = "<group>"; };
+		D03087AD15EA66230031D5D4 /* lwSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwSound.h; sourceTree = "<group>"; };
 		D0527AA215E68EA200191554 /* lwFileSys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwFileSys.h; sourceTree = "<group>"; };
 		D0527AA315E68EA200191554 /* lwPreInclude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwPreInclude.h; sourceTree = "<group>"; };
 		D0527AA415E68EA200191554 /* lwSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwSingleton.h; sourceTree = "<group>"; };
@@ -282,6 +298,18 @@
 		D0CB112B15E68525003DF8B6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D0CB112F15E68525003DF8B6 /* stdafx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stdafx.h; sourceTree = "<group>"; };
 		D0CB113915E6865D003DF8B6 /* lwLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwLog.h; sourceTree = "<group>"; };
+		D0F9B64D15EA83270029146E /* alut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alut.h; sourceTree = "<group>"; };
+		D0F9B64E15EA83270029146E /* alutBufferData.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alutBufferData.c; sourceTree = "<group>"; };
+		D0F9B64F15EA83270029146E /* alutCodec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alutCodec.c; sourceTree = "<group>"; };
+		D0F9B65015EA83270029146E /* alutError.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alutError.c; sourceTree = "<group>"; };
+		D0F9B65115EA83270029146E /* alutInit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alutInit.c; sourceTree = "<group>"; };
+		D0F9B65215EA83270029146E /* alutInputStream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alutInputStream.c; sourceTree = "<group>"; };
+		D0F9B65315EA83270029146E /* alutInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alutInternal.h; sourceTree = "<group>"; };
+		D0F9B65415EA83270029146E /* alutLoader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alutLoader.c; sourceTree = "<group>"; };
+		D0F9B65515EA83270029146E /* alutOutputStream.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alutOutputStream.c; sourceTree = "<group>"; };
+		D0F9B65615EA83270029146E /* alutUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alutUtil.c; sourceTree = "<group>"; };
+		D0F9B65715EA83270029146E /* alutVersion.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alutVersion.c; sourceTree = "<group>"; };
+		D0F9B65815EA83270029146E /* alutWaveform.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alutWaveform.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -489,6 +517,7 @@
 		D0CB111D15E68524003DF8B6 = {
 			isa = PBXGroup;
 			children = (
+				D0F9B64C15EA83270029146E /* ALUT */,
 				D067890715E6CBBC006FAE24 /* cml */,
 				D06788F215E6CBB6006FAE24 /* soil */,
 				D0CB112D15E68525003DF8B6 /* lwtf */,
@@ -516,6 +545,8 @@
 		D0CB112D15E68525003DF8B6 /* lwtf */ = {
 			isa = PBXGroup;
 			children = (
+				D03087AC15EA66230031D5D4 /* lwSound.cpp */,
+				D03087AD15EA66230031D5D4 /* lwSound.h */,
 				D030878D15EA40BA0031D5D4 /* lwTouchEvent.cpp */,
 				D030878E15EA40BA0031D5D4 /* lwTouchEvent.h */,
 				D0678A2815E8E6E3006FAE24 /* lwShader.h */,
@@ -549,6 +580,25 @@
 				D0CB112F15E68525003DF8B6 /* stdafx.h */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D0F9B64C15EA83270029146E /* ALUT */ = {
+			isa = PBXGroup;
+			children = (
+				D0F9B64D15EA83270029146E /* alut.h */,
+				D0F9B64E15EA83270029146E /* alutBufferData.c */,
+				D0F9B64F15EA83270029146E /* alutCodec.c */,
+				D0F9B65015EA83270029146E /* alutError.c */,
+				D0F9B65115EA83270029146E /* alutInit.c */,
+				D0F9B65215EA83270029146E /* alutInputStream.c */,
+				D0F9B65315EA83270029146E /* alutInternal.h */,
+				D0F9B65415EA83270029146E /* alutLoader.c */,
+				D0F9B65515EA83270029146E /* alutOutputStream.c */,
+				D0F9B65615EA83270029146E /* alutUtil.c */,
+				D0F9B65715EA83270029146E /* alutVersion.c */,
+				D0F9B65815EA83270029146E /* alutWaveform.c */,
+			);
+			path = ALUT;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -679,6 +729,9 @@
 				D0678A0E15E80E60006FAE24 /* lwColor.h in Headers */,
 				D0678A2A15E8E6E3006FAE24 /* lwShader.h in Headers */,
 				D030879215EA40BA0031D5D4 /* lwTouchEvent.h in Headers */,
+				D03087AF15EA66230031D5D4 /* lwSound.h in Headers */,
+				D0F9B65915EA83270029146E /* alut.h in Headers */,
+				D0F9B65F15EA83270029146E /* alutInternal.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -745,6 +798,17 @@
 				D0678A1015E80E85006FAE24 /* lwColor.cpp in Sources */,
 				D0678A2B15E8E6E3006FAE24 /* lwShader.cpp in Sources */,
 				D030879115EA40BA0031D5D4 /* lwTouchEvent.cpp in Sources */,
+				D03087AE15EA66230031D5D4 /* lwSound.cpp in Sources */,
+				D0F9B65A15EA83270029146E /* alutBufferData.c in Sources */,
+				D0F9B65B15EA83270029146E /* alutCodec.c in Sources */,
+				D0F9B65C15EA83270029146E /* alutError.c in Sources */,
+				D0F9B65D15EA83270029146E /* alutInit.c in Sources */,
+				D0F9B65E15EA83270029146E /* alutInputStream.c in Sources */,
+				D0F9B66015EA83270029146E /* alutLoader.c in Sources */,
+				D0F9B66115EA83270029146E /* alutOutputStream.c in Sources */,
+				D0F9B66215EA83270029146E /* alutUtil.c in Sources */,
+				D0F9B66315EA83270029146E /* alutVersion.c in Sources */,
+				D0F9B66415EA83270029146E /* alutWaveform.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -798,6 +862,7 @@
 				DSTROOT = /tmp/lwtf.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = lwtf/stdafx.h;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = .;
 				OTHER_LDFLAGS = "-ObjC";
@@ -813,6 +878,7 @@
 				DSTROOT = /tmp/lwtf.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = lwtf/stdafx.h;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = .;
 				OTHER_LDFLAGS = "-ObjC";

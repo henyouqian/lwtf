@@ -1,15 +1,18 @@
 #include "lwApp.h"
 #include "lwTask.h"
 #include "lwSprite.h"
+#include "lwSound.h"
 
 namespace lw {
     
     App::App(){
         spriteInit();
+        soundInit();
     }
 
     App::~App(){
-        spriteClean();
+        spriteExit();
+        soundExit();
     }
 
     void App::main(){
