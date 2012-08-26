@@ -3,6 +3,8 @@
 
 namespace lw {
     
+    struct TouchEvent;
+    
 	class Task
 	{
 	public:
@@ -32,6 +34,7 @@ namespace lw {
 		virtual void vEnd(){};
         virtual void vMain(){};
         virtual void vDraw(){};
+        virtual void vEvent(const lw::TouchEvent& evt){};
         
         int _priority;
         bool _isVisible;
@@ -42,10 +45,12 @@ namespace lw {
         void main();
         void draw();
         void updateState();
+        void event(const lw::TouchEvent& evt);
     };
     
     void taskMain();
     void taskDraw();
+    void taskEvent(const lw::TouchEvent& evt);
     
 } //namespace lw
 
