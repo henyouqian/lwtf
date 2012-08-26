@@ -9,6 +9,7 @@ namespace lw {
         void add(Task* pTask);
         void main();
         void draw();
+        bool hasRunningTask();
         
     private:
         std::list<Task*> _tasks;
@@ -42,14 +43,24 @@ namespace lw {
         std::list<Task*>::iterator it = _tasks.begin();
         std::list<Task*>::iterator itend = _tasks.end();
         for ( ; it != itend; ++it ){
-            (*it)->updateState();
+            (*it)->draw();
         }
-        
         
         it = _tasks.begin();
         for ( ; it != itend; ++it ){
-            (*it)->draw();
+            (*it)->updateState();
         }
+    }
+    
+    bool TaskMgr::hasRunningTask(){
+        std::list<Task*>::iterator it = _tasks.begin();
+        std::list<Task*>::iterator itend = _tasks.end();
+        for ( ; it != itend; ++it ){
+            if ( (*it)->getState() == Task::RUNNING ){
+                return true;
+            }
+        }
+        return false;
     }
     
     TaskMgr _taskMgr;
@@ -69,9 +80,14 @@ namespace lw {
             lwerror("Task state is not idle");
             return;
         }
-        _state = STARTING;
         _isVisible = true;
         _isPaused = false;
+        if ( _taskMgr.hasRunningTask() ){
+            _state = STARTING;
+        }else{
+            _state = RUNNING;
+            vBegin();
+        }
     }
     
     void Task::stop(){
