@@ -17,6 +17,7 @@ namespace lw{
     public:
         static SoundBufferRes* create(const char* file, bool isPath);
         ~SoundBufferRes();
+        int getId();
     
     private:
         SoundBufferRes(const char* file, bool isPath, bool &ok);
@@ -74,12 +75,15 @@ namespace lw{
         }
     }
     
+    int SoundBufferRes::getId(){
+        return _buffId;
+    }
     
     //=========================================
 
-	Sound* Sound::create(const char *file, bool isPath){
+	SoundSource* SoundSource::create(const char *file, int sourceNum, bool isPath){
         bool ok = false;
-        Sound* pSnd = new Sound(file, isPath, ok);
+        SoundSource* pSnd = new SoundSource(file, sourceNum, isPath, ok);
         if ( pSnd && ok ){
             return pSnd;
         }else if ( pSnd ){
@@ -88,73 +92,113 @@ namespace lw{
         return NULL;
     }
     
-    Sound::Sound(const char *file, bool isPath, bool &ok){
+    SoundSource::SoundSource(const char *file, int sourceNum, bool isPath, bool &ok)
+    :_sources(NULL), _sourceNum(0), _currSourceIdx(-1){
         _pBuffRes = SoundBufferRes::create(file, isPath);
         if ( !_pBuffRes ){
             lwerror("create buffer failed.");
             ok = false;
             return;
         }
+        sourceNum = std::max(std::min(sourceNum, 5), 1);
+        _sources = new unsigned int[sourceNum];
+        alGenSources(sourceNum, _sources);
+        int err = alGetError();
+        if ( err != AL_NO_ERROR ){
+            lwerror("alGenSources error:" << err );
+            ok = false;
+            return;
+        }
+        for ( int i = 0; i < sourceNum; ++i ){
+            alSourcei(_sources[i], AL_BUFFER, _pBuffRes->getId());
+            int err = alGetError();
+            if ( err != AL_NO_ERROR ){
+                lwerror("al bind buffer error:" << err );
+                ok = false;
+                return;
+            }
+        }
         
+        _sourceNum = sourceNum;
         ok = true;
     }
     
-    Sound::~Sound(){
+    SoundSource::~SoundSource(){
+        if ( _sourceNum ){
+            for ( int i = 0; i < _sourceNum; ++i ){
+                alSourcei(_sources[i], AL_BUFFER, 0);
+            }
+            alDeleteSources(_sourceNum, _sources);
+            delete [] _sources;
+        }
         if ( _pBuffRes ){
             _pBuffRes->release();
         }
     }
     
-    int Sound::play(){
-        
+    void SoundSource::play(){
+        ++_currSourceIdx;
+        if ( _currSourceIdx == _sourceNum ){
+            _currSourceIdx = 0;
+        }
+        alSourcePlay(_sources[_currSourceIdx]);
     }
     
-    void Sound::stop(int source){
-        
+    void SoundSource::stop(){
+        alSourceStop(_sources[_currSourceIdx]);
     }
     
-    void Sound::stopAll(){
-        
-    }
-    
-    void Sound::setLoop(bool b){
-        _loop = b;
-    }
-    
-    bool Sound::isPlaying(){
-        return !_sources.empty();
-    }
-    
-    bool Sound::isLoop(){
-        return _loop;
-    }
-    
-    void Sound::setVolume(float volume){
-        _volume = volume;
-        
-    }
-    
-    float Sound::getVolume(){
-        return _volume;
-    }
-    
-    void Sound::setPitch(float pitch){
-        _pitch = pitch;
-        if ( !_sources.empty() ){
-            alSourcef(_sources.back(), AL_PITCH, pitch);
-            
+    bool SoundSource::isPlaying(){
+        ALint state;
+        if ( _currSourceIdx == -1 ){
+            return false;
+        }else{
+            alGetSourcei(_sources[_currSourceIdx], AL_SOURCE_STATE, &state);
+            return state == AL_PLAYING;
         }
     }
     
-    float Sound::getPitch(){
+    void SoundSource::setLoop(bool b){
+        _loop = b;
+        for ( int i = 0; i < _sourceNum; ++i ){
+            alSourcei(_sources[i], AL_LOOPING, _loop?1:0);
+        }
+    }
+    
+    bool SoundSource::isLoop(){
+        return _loop;
+    }
+    
+    void SoundSource::setVolume(float volume){
+        _volume = volume;
+        for ( int i = 0; i < _sourceNum; ++i ){
+            alSourcef(_sources[_currSourceIdx], AL_GAIN, volume);
+        }
+    }
+    
+    float SoundSource::getVolume(){
+        return _volume;
+    }
+    
+    void SoundSource::setPitch(float pitch){
+        _pitch = pitch;
+        for ( int i = 0; i < _sourceNum; ++i ){
+            alSourcef(_sources[_currSourceIdx], AL_PITCH, pitch);
+        }
+    }
+    
+    float SoundSource::getPitch(){
         return _pitch;
     }
     
-    void Sound::setOffset(float offsetSec){
-        _secOffset = offsetSec;
+    void SoundSource::setOffset(float secOffset){
+        _secOffset = secOffset;
+        for ( int i = 0; i < _sourceNum; ++i ){
+            alSourcef(_sources[_currSourceIdx], AL_SEC_OFFSET, secOffset);
+        }
     }
     
-    float Sound::getOffset(){
+    float SoundSource::getOffset(){
         return _secOffset;
     }
     

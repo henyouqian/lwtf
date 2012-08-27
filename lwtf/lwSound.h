@@ -1,5 +1,5 @@
-#ifndef __LW_SOUND_H__
-#define __LW_SOUND_H__
+#ifndef __LW_Sound_H__
+#define __LW_Sound_H__
 
 #include "lwtf/lwSingleton.h"
 #include <list>
@@ -7,14 +7,12 @@
 namespace lw{
 	
     class SoundBufferRes;
-	class Sound{
+	class SoundSource{
 	public:
-        Sound* create(const char *file, bool isPath);
-		~Sound();
-		int play(bool newSource);
-        
-		void stop(int source);
-        void stopAll();
+        static SoundSource* create(const char *file, int sourceNum, bool isPath);
+		~SoundSource();
+		void play();
+		void stop();
 		void setLoop(bool b);
         bool isPlaying();
         bool isLoop();
@@ -23,13 +21,15 @@ namespace lw{
         float getVolume();
 		void setPitch(float pitch);
         float getPitch();
-		void setOffset(float offsetSec);
+		void setOffset(float secOffset);
 		float getOffset();
 
 	private:
-		Sound(const char *file, bool isPath, bool &ok);
+		SoundSource(const char *file, int sourceNum, bool isPath, bool &ok);
+        unsigned int *_sources;
+        int _sourceNum;
+        int _currSourceIdx;
 		bool _loop;
-        std::list<int>_sources;
 		float _volume;
 		float _pitch;
 		float _secOffset;
@@ -42,4 +42,4 @@ namespace lw{
 
 } //namespace lw
 
-#endif //__LW_SOUND_H__
+#endif //__LW_Sound_H__
