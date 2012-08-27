@@ -142,6 +142,12 @@
 		D0678A1015E80E85006FAE24 /* lwColor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0678A0F15E80E85006FAE24 /* lwColor.cpp */; };
 		D0678A2A15E8E6E3006FAE24 /* lwShader.h in Headers */ = {isa = PBXBuildFile; fileRef = D0678A2815E8E6E3006FAE24 /* lwShader.h */; };
 		D0678A2B15E8E6E3006FAE24 /* lwShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0678A2915E8E6E3006FAE24 /* lwShader.cpp */; };
+		D0ABF20A15EB92DC008CFDD8 /* lwView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0ABF20815EB92DC008CFDD8 /* lwView.cpp */; };
+		D0ABF20B15EB92DC008CFDD8 /* lwView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0ABF20915EB92DC008CFDD8 /* lwView.h */; };
+		D0ABF20F15EBB911008CFDD8 /* lwButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0ABF20D15EBB911008CFDD8 /* lwButton.cpp */; };
+		D0ABF21015EBB911008CFDD8 /* lwButton.h in Headers */ = {isa = PBXBuildFile; fileRef = D0ABF20E15EBB911008CFDD8 /* lwButton.h */; };
+		D0ABF21315EBEADD008CFDD8 /* lwAccelerometer.h in Headers */ = {isa = PBXBuildFile; fileRef = D0ABF21115EBEADD008CFDD8 /* lwAccelerometer.h */; };
+		D0ABF21415EBEADD008CFDD8 /* lwAccelerometer.mm in Sources */ = {isa = PBXBuildFile; fileRef = D0ABF21215EBEADD008CFDD8 /* lwAccelerometer.mm */; };
 		D0CB112C15E68525003DF8B6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0CB112B15E68525003DF8B6 /* Foundation.framework */; };
 		D0CB113B15E6865D003DF8B6 /* lwLog.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CB113915E6865D003DF8B6 /* lwLog.h */; };
 		D0F9B65915EA83270029146E /* alut.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F9B64D15EA83270029146E /* alut.h */; };
@@ -294,6 +300,12 @@
 		D0678A0F15E80E85006FAE24 /* lwColor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwColor.cpp; sourceTree = "<group>"; };
 		D0678A2815E8E6E3006FAE24 /* lwShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwShader.h; sourceTree = "<group>"; };
 		D0678A2915E8E6E3006FAE24 /* lwShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwShader.cpp; sourceTree = "<group>"; };
+		D0ABF20815EB92DC008CFDD8 /* lwView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwView.cpp; sourceTree = "<group>"; };
+		D0ABF20915EB92DC008CFDD8 /* lwView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwView.h; sourceTree = "<group>"; };
+		D0ABF20D15EBB911008CFDD8 /* lwButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwButton.cpp; sourceTree = "<group>"; };
+		D0ABF20E15EBB911008CFDD8 /* lwButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwButton.h; sourceTree = "<group>"; };
+		D0ABF21115EBEADD008CFDD8 /* lwAccelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lwAccelerometer.h; path = lwtf/lwAccelerometer.h; sourceTree = SOURCE_ROOT; };
+		D0ABF21215EBEADD008CFDD8 /* lwAccelerometer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = lwAccelerometer.mm; path = lwtf/lwAccelerometer.mm; sourceTree = SOURCE_ROOT; };
 		D0CB112815E68525003DF8B6 /* liblwtf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblwtf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0CB112B15E68525003DF8B6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D0CB112F15E68525003DF8B6 /* stdafx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stdafx.h; sourceTree = "<group>"; };
@@ -514,6 +526,19 @@
 			path = vector;
 			sourceTree = "<group>";
 		};
+		D0ABF20715EB92DC008CFDD8 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				D0ABF21115EBEADD008CFDD8 /* lwAccelerometer.h */,
+				D0ABF21215EBEADD008CFDD8 /* lwAccelerometer.mm */,
+				D0ABF20D15EBB911008CFDD8 /* lwButton.cpp */,
+				D0ABF20E15EBB911008CFDD8 /* lwButton.h */,
+				D0ABF20815EB92DC008CFDD8 /* lwView.cpp */,
+				D0ABF20915EB92DC008CFDD8 /* lwView.h */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		D0CB111D15E68524003DF8B6 = {
 			isa = PBXGroup;
 			children = (
@@ -545,6 +570,7 @@
 		D0CB112D15E68525003DF8B6 /* lwtf */ = {
 			isa = PBXGroup;
 			children = (
+				D0ABF20715EB92DC008CFDD8 /* UI */,
 				D03087AC15EA66230031D5D4 /* lwSound.cpp */,
 				D03087AD15EA66230031D5D4 /* lwSound.h */,
 				D030878D15EA40BA0031D5D4 /* lwTouchEvent.cpp */,
@@ -732,6 +758,9 @@
 				D03087AF15EA66230031D5D4 /* lwSound.h in Headers */,
 				D0F9B65915EA83270029146E /* alut.h in Headers */,
 				D0F9B65F15EA83270029146E /* alutInternal.h in Headers */,
+				D0ABF20B15EB92DC008CFDD8 /* lwView.h in Headers */,
+				D0ABF21015EBB911008CFDD8 /* lwButton.h in Headers */,
+				D0ABF21315EBEADD008CFDD8 /* lwAccelerometer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -809,6 +838,9 @@
 				D0F9B66215EA83270029146E /* alutUtil.c in Sources */,
 				D0F9B66315EA83270029146E /* alutVersion.c in Sources */,
 				D0F9B66415EA83270029146E /* alutWaveform.c in Sources */,
+				D0ABF20A15EB92DC008CFDD8 /* lwView.cpp in Sources */,
+				D0ABF20F15EBB911008CFDD8 /* lwButton.cpp in Sources */,
+				D0ABF21415EBEADD008CFDD8 /* lwAccelerometer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

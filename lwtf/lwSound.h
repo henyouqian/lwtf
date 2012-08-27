@@ -2,7 +2,6 @@
 #define __LW_Sound_H__
 
 #include "lwtf/lwSingleton.h"
-#include <list>
 
 namespace lw{
 	

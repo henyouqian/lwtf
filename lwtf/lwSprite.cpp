@@ -53,11 +53,12 @@ namespace lw {
                 || textureId != _currTextureId 
                 || _vertices.size() >= VERTICIS_NUM_LIMIT-3 ) )
         {
-            _currColor = color;
-            _currBlendMode = blendMode;
-            _currTextureId = textureId;
             flush();
         }
+        _currColor = color;
+        _currBlendMode = blendMode;
+        _currTextureId = textureId;
+        
         _vertices.push_back(vertex[0]);
         _vertices.push_back(vertex[1]);
         _vertices.push_back(vertex[2]);
@@ -235,7 +236,7 @@ namespace lw {
         _blendMode = blendMode;
     }
     
-    void Sprite::collect(){
+    void Sprite::draw(){
         if ( _needUpdate ){
             update();
         }

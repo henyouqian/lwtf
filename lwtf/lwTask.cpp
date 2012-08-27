@@ -1,6 +1,5 @@
 #include "lwTask.h"
 #include "lwtf/lwLog.h"
-#include <list>
 
 namespace lw {
     

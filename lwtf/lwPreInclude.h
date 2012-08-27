@@ -11,6 +11,8 @@
         typedef vector3f Vector3;
         typedef vector4f Vector4;
     }
+    #include <list>
+    #include <string>
 
 #endif //__cplusplus
 

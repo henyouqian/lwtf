@@ -37,7 +37,7 @@ namespace lw{
 		void getSize(float &w, float &h);
         void setColor(const Color &color);
         void setBlendMode(BlendMode blendMode);
-        void collect();
+        void draw();
         
     private:
         TextureRes* _pTextureRes;

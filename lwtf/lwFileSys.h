@@ -1,8 +1,6 @@
 #ifndef __LW_FILE_SYS_H__
 #define __LW_FILE_SYS_H__
 
-#include <string>
-
 namespace lw{
     
 	const char* getDocDir();
