@@ -3,6 +3,7 @@
 #include "lwtf/lwFileSys.h"
 #include "lwtf/lwLog.h"
 #include "soil/SOIL.h"
+#include <map>
 
 namespace lw{
 

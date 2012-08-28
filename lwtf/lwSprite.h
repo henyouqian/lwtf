@@ -3,6 +3,7 @@
 
 #include "lwtf/lwColor.h"
 #include "cml/cml.h"
+#include <OpenGLES/ES2/gl.h>
 
 namespace lw{
     
@@ -14,7 +15,7 @@ namespace lw{
         BLEND_ADD,
         BLEND_MUL,
     };
-    struct VertexPosUV{
+    struct SpriteVertex{
         float x, y, z;
         float u, v;
     };
@@ -59,6 +60,7 @@ namespace lw{
     void spriteInit();
     void spriteExit();
     void spriteFlush();
+    void spriteCollectVetices(SpriteVertex *vertices, int numVertices, Color &color, BlendMode blendMode, GLuint textureId);
 	
 } //namespace lw
 

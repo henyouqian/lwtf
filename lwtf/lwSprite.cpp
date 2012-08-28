@@ -9,7 +9,7 @@ namespace lw {
     public:
         SpriteVertexBuffer();
         ~SpriteVertexBuffer();
-        void collectTriangle(VertexPosUV *vertex, Color &color, BlendMode blendMode, GLuint textureId);
+        void collectVetices(SpriteVertex *vertices, int numVertices, Color &color, BlendMode blendMode, GLuint textureId);
         void flush();
         
         enum{
@@ -18,7 +18,7 @@ namespace lw {
         };
         
     private:
-        std::vector<VertexPosUV> _vertices;
+        std::vector<SpriteVertex> _vertices;
         Color _currColor;
         BlendMode _currBlendMode;
         GLuint _currTextureId;
@@ -27,6 +27,7 @@ namespace lw {
         int _uvLocation;
         int _mvpMatLocation;
         int _colorLocation;
+        int _samplerLocation;
     };
     
     SpriteVertexBuffer::SpriteVertexBuffer(){
@@ -39,6 +40,7 @@ namespace lw {
         _uvLocation = _pShaderProg->getAttribLocation("a_uv");
         _mvpMatLocation = _pShaderProg->getUniformLocation("u_mvpmat");
         _colorLocation = _pShaderProg->getUniformLocation("u_color");
+        _samplerLocation = _pShaderProg->getUniformLocation("u_texture");
     }
     
     SpriteVertexBuffer::~SpriteVertexBuffer(){
@@ -46,12 +48,13 @@ namespace lw {
             _pShaderProg->release();
         }
     }
-    void SpriteVertexBuffer::collectTriangle(VertexPosUV *vertex, Color &color, BlendMode blendMode, GLuint textureId){
+    
+    void SpriteVertexBuffer::collectVetices(SpriteVertex *vertices, int numVertices, Color &color, BlendMode blendMode, GLuint textureId){
         if ( !_vertices.empty() && 
             ( color != _currColor 
-                || blendMode != _currBlendMode 
-                || textureId != _currTextureId 
-                || _vertices.size() >= VERTICIS_NUM_LIMIT-3 ) )
+             || blendMode != _currBlendMode 
+             || textureId != _currTextureId 
+             || _vertices.size() >= VERTICIS_NUM_LIMIT-3 ) )
         {
             flush();
         }
@@ -59,9 +62,9 @@ namespace lw {
         _currBlendMode = blendMode;
         _currTextureId = textureId;
         
-        _vertices.push_back(vertex[0]);
-        _vertices.push_back(vertex[1]);
-        _vertices.push_back(vertex[2]);
+        for ( int i = 0; i < numVertices; ++i ) {
+            _vertices.push_back(vertices[i]);
+        }
     }
     
     void SpriteVertexBuffer::flush(){
@@ -76,6 +79,9 @@ namespace lw {
         glUniform4f(_colorLocation, _currColor.r/255.f, _currColor.g/255.f, _currColor.b/255.f, _currColor.a/255.f);
         
         glEnable(GL_TEXTURE_2D);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, _currTextureId);
+        glUniform1i(_samplerLocation, 0);
         glDisable(GL_CULL_FACE);
 		glDepthMask(GL_FALSE);
         if ( _currBlendMode == BLEND_NONE ){
@@ -93,9 +99,9 @@ namespace lw {
         
         const char* p = (char*)&_vertices[0];
         glEnableVertexAttribArray(_posLocation);
-        glVertexAttribPointer(_posLocation, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPosUV), p);
+        glVertexAttribPointer(_posLocation, 3, GL_FLOAT, GL_FALSE, sizeof(SpriteVertex), p);
         glEnableVertexAttribArray(_uvLocation);
-        glVertexAttribPointer(_uvLocation, 2, GL_FLOAT, GL_FALSE, sizeof(VertexPosUV), p+3*sizeof(float));
+        glVertexAttribPointer(_uvLocation, 2, GL_FLOAT, GL_FALSE, sizeof(SpriteVertex), p+3*sizeof(float));
         
         _pShaderProg->use();
         
@@ -164,8 +170,6 @@ namespace lw {
 		_v1 = v/texH;
         _u2 = (u+_w)/texW;
 		_v2 = (v+_h)/texH;
-		//_v1 = 1.f - _v1;
-		//_v2 = 1.f - _v2;
     }
     
     void Sprite::getUV(float &u, float &v, float &w, float &h){
@@ -241,7 +245,7 @@ namespace lw {
             update();
         }
         //1
-		VertexPosUV v[3];
+		SpriteVertex v[6];
 		v[0].x = _vertexPos[0][0];
 		v[0].y = _vertexPos[0][1];
 		v[0].z = 0.f;
@@ -261,31 +265,29 @@ namespace lw {
 		v[2].z = 0.f;
 		v[2].u = _u2;
 		v[2].v = _v1;
-        
-        _pvb->collectTriangle(v, _color, _blendMode, _pTextureRes->getGlId());
 		
         //3
-		v[0].x = _vertexPos[2][0];
-		v[0].y = _vertexPos[2][1];
-		v[0].z = 0.f;
-		v[0].u = _u2;
-		v[0].v = _v1;
+		v[3].x = _vertexPos[2][0];
+		v[3].y = _vertexPos[2][1];
+		v[3].z = 0.f;
+		v[3].u = _u2;
+		v[3].v = _v1;
 		
 		//2
-		v[1].x = _vertexPos[1][0];
-		v[1].y = _vertexPos[1][1];
-		v[1].z = 0.f;
-		v[1].u = _u1;
-		v[1].v = _v2;
+		v[4].x = _vertexPos[1][0];
+		v[4].y = _vertexPos[1][1];
+		v[4].z = 0.f;
+		v[4].u = _u1;
+		v[4].v = _v2;
 	    
 		//4
-		v[2].x = _vertexPos[3][0];
-		v[2].y = _vertexPos[3][1];
-		v[2].z = 0.f;
-		v[2].u = _u2;
-		v[2].v = _v2;
+		v[5].x = _vertexPos[3][0];
+		v[5].y = _vertexPos[3][1];
+		v[5].z = 0.f;
+		v[5].u = _u2;
+		v[5].v = _v2;
         
-        _pvb->collectTriangle(v, _color, _blendMode, _pTextureRes->getGlId());
+        _pvb->collectVetices(v, 6, _color, _blendMode, _pTextureRes->getGlId());
     }
     
     void Sprite::update(){
@@ -326,9 +328,6 @@ namespace lw {
         
         _vertexPos[3][0] = p4[0];
 		_vertexPos[3][1] = -p4[1];
-        
-        
-        
     }
     
     void spriteInit(){
@@ -344,6 +343,10 @@ namespace lw {
     
     void spriteFlush(){
         _pvb->flush();
+    }
+    
+    void spriteCollectVetices(SpriteVertex *vertices, int numVertices, Color &color, BlendMode blendMode, GLuint textureId){
+        _pvb->collectVetices(vertices, numVertices, color, blendMode, textureId);
     }
     
     
