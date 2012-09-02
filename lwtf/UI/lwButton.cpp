@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "lwtf/lwButton.h"
-#include "lwtf/lwSprite.h"
-#include "lwtf/lwTouchEvent.h"
+#include "lwButton.h"
+#include "lwSprite.h"
+#include "lwTouchEvent.h"
 
 namespace lw{
 

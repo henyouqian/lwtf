@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "lwtf/lwTexture.h"
-#include "lwtf/lwFileSys.h"
-#include "lwtf/lwLog.h"
+#include "lwTexture.h"
+#include "lwFileSys.h"
+#include "lwLog.h"
 #include "soil/SOIL.h"
 #include <map>
 
@@ -63,17 +63,18 @@ namespace lw{
 		if ( it == _resMap.end() ){
             bool ok = false;
 			TextureRes* p = new TextureRes(fileName, ok);
-			if ( p && !ok  ){
+			if ( p && ok  ){
+                _resMap[strFileName] = p;
+				return p;
+			}else if (p){
 				delete p;
 				return NULL;
-			}else{
-				_resMap[strFileName] = p;
-				return p;
 			}
 		}else{
 			it->second->retain();
 			return it->second;
 		}
+        return NULL;
 	}
 
 	void TextureRes::clean(){

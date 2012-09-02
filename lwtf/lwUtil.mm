@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "lwtf/lwUtil.h"
+#include "lwUtil.h"
 #include <CoreFoundation/cfDate.h>
 #include <iostream>
 
@@ -42,6 +42,6 @@ const wchar_t* UTF82W::data(){
 	return (const wchar_t*)[_str cStringUsingEncoding:NSUTF32LittleEndianStringEncoding];
 }
 
-UTF82W::operator const wchar_t*(){
+UTF82W:: operator const wchar_t*(){
 	return (const wchar_t*)[_str cStringUsingEncoding:NSUTF32LittleEndianStringEncoding];
 }

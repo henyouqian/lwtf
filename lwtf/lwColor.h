@@ -2,7 +2,7 @@
 #define __LW_COLOR_H__
 
 namespace lw{
-	//need float optimise
+	
 	struct Color{
 		Color():r(255), g(255), b(255), a(255){}
 		Color(unsigned char rr, unsigned char gg, unsigned char bb, unsigned char aa):r(rr), g(gg), b(bb), a(aa){

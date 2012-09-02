@@ -17,6 +17,8 @@
 		D0527AA915E68EA200191554 /* lwUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = D0527AA515E68EA200191554 /* lwUtil.h */; };
 		D0527AAC15E68F0800191554 /* lwFileSys.mm in Sources */ = {isa = PBXBuildFile; fileRef = D0527AAA15E68F0800191554 /* lwFileSys.mm */; };
 		D0527AAD15E68F0800191554 /* lwUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = D0527AAB15E68F0800191554 /* lwUtil.mm */; };
+		D05F7A9515F253CB00C264DB /* lwLabelBm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D05F7A9315F253CB00C264DB /* lwLabelBm.cpp */; };
+		D05F7A9615F253CB00C264DB /* lwLabelBM.h in Headers */ = {isa = PBXBuildFile; fileRef = D05F7A9415F253CB00C264DB /* lwLabelBM.h */; };
 		D06788CB15E69804006FAE24 /* lwRes.h in Headers */ = {isa = PBXBuildFile; fileRef = D06788CA15E69804006FAE24 /* lwRes.h */; };
 		D06788DD15E6A22B006FAE24 /* lwApp.h in Headers */ = {isa = PBXBuildFile; fileRef = D06788DB15E6A22B006FAE24 /* lwApp.h */; };
 		D06788DE15E6A22B006FAE24 /* lwApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D06788DC15E6A22B006FAE24 /* lwApp.cpp */; };
@@ -173,6 +175,8 @@
 		D0527AA515E68EA200191554 /* lwUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwUtil.h; sourceTree = "<group>"; };
 		D0527AAA15E68F0800191554 /* lwFileSys.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = lwFileSys.mm; sourceTree = "<group>"; };
 		D0527AAB15E68F0800191554 /* lwUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = lwUtil.mm; sourceTree = "<group>"; };
+		D05F7A9315F253CB00C264DB /* lwLabelBm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwLabelBm.cpp; sourceTree = "<group>"; };
+		D05F7A9415F253CB00C264DB /* lwLabelBM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwLabelBM.h; sourceTree = "<group>"; };
 		D06788CA15E69804006FAE24 /* lwRes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwRes.h; sourceTree = "<group>"; };
 		D06788DB15E6A22B006FAE24 /* lwApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwApp.h; sourceTree = "<group>"; };
 		D06788DC15E6A22B006FAE24 /* lwApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwApp.cpp; sourceTree = "<group>"; };
@@ -567,6 +571,8 @@
 				D0ABF20715EB92DC008CFDD8 /* UI */,
 				D03087AC15EA66230031D5D4 /* lwSound.cpp */,
 				D03087AD15EA66230031D5D4 /* lwSound.h */,
+				D05F7A9315F253CB00C264DB /* lwLabelBm.cpp */,
+				D05F7A9415F253CB00C264DB /* lwLabelBM.h */,
 				D030878D15EA40BA0031D5D4 /* lwTouchEvent.cpp */,
 				D030878E15EA40BA0031D5D4 /* lwTouchEvent.h */,
 				D0678A2815E8E6E3006FAE24 /* lwShader.h */,
@@ -754,6 +760,7 @@
 				D0F9B65F15EA83270029146E /* alutInternal.h in Headers */,
 				D0ABF20B15EB92DC008CFDD8 /* lwView.h in Headers */,
 				D0ABF21015EBB911008CFDD8 /* lwButton.h in Headers */,
+				D05F7A9615F253CB00C264DB /* lwLabelBM.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -833,6 +840,7 @@
 				D0F9B66415EA83270029146E /* alutWaveform.c in Sources */,
 				D0ABF20A15EB92DC008CFDD8 /* lwView.cpp in Sources */,
 				D0ABF20F15EBB911008CFDD8 /* lwButton.cpp in Sources */,
+				D05F7A9515F253CB00C264DB /* lwLabelBm.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -240,6 +240,45 @@ namespace lw {
         _blendMode = blendMode;
     }
     
+    void Sprite::setMatrix(cml::Matrix3 m){
+        cml::Matrix3 m1;
+		cml::matrix_translation_2D(m, _posX, _posY);
+		if ( _rotate != 0.f ){
+			cml::matrix_rotation_2D(m1, _rotate);
+			m *= m1;
+		}
+		if ( _scaleX != 1.f || _scaleY != 1.f ){
+			cml::matrix_scale_2D(m1, _scaleX, _scaleY);
+			m *= m1;
+		}
+        
+        float posX1 = -_ancX;
+		float posY1 = -_ancY;
+		float posX2 = posX1 + _w;
+		float posY2 = posY1 + _h;
+        
+		cml::Vector2 p1(posX1, posY1);
+		p1 = cml::transform_point_2D(m, p1);
+		cml::Vector2 p2(posX1, posY2);
+		p2 = cml::transform_point_2D(m, p2);
+		cml::Vector2 p3(posX2, posY1);
+		p3 = cml::transform_point_2D(m, p3);
+		cml::Vector2 p4(posX2, posY2);
+		p4 = cml::transform_point_2D(m, p4);
+        
+        _vertexPos[0][0] = p1[0];
+		_vertexPos[0][1] = -p1[1];
+        
+        _vertexPos[1][0] = p2[0];
+		_vertexPos[1][1] = -p2[1];
+        
+        _vertexPos[2][0] = p3[0];
+		_vertexPos[2][1] = -p3[1];
+        
+        _vertexPos[3][0] = p4[0];
+		_vertexPos[3][1] = -p4[1];
+    }
+    
     void Sprite::draw(){
         if ( _needUpdate ){
             update();
@@ -292,14 +331,14 @@ namespace lw {
     
     void Sprite::update(){
         _needUpdate = false;
-        cml::Matrix4 m, m1;
-		cml::matrix_translation(m, _posX, _posY, 0.f);
+        cml::Matrix3 m, m1;
+		cml::matrix_translation_2D(m, _posX, _posY);
 		if ( _rotate != 0.f ){
-			cml::matrix_rotation_world_z(m1, _rotate);
+			cml::matrix_rotation_2D(m1, _rotate);
 			m *= m1;
 		}
 		if ( _scaleX != 1.f || _scaleY != 1.f ){
-			cml::matrix_scale(m1, _scaleX, _scaleY, 1.f);
+			cml::matrix_scale_2D(m1, _scaleX, _scaleY);
 			m *= m1;
 		}
         
@@ -308,14 +347,14 @@ namespace lw {
 		float posX2 = posX1 + _w;
 		float posY2 = posY1 + _h;
         
-		cml::Vector3 p1(posX1, posY1, 0.f);
-		p1 = cml::transform_point(m, p1);
-		cml::Vector3 p2(posX1, posY2, 0.f);
-		p2 = cml::transform_point(m, p2);
-		cml::Vector3 p3(posX2, posY1, 0.f);
-		p3 = cml::transform_point(m, p3);
-		cml::Vector3 p4(posX2, posY2, 0.f);
-		p4 = cml::transform_point(m, p4);
+		cml::Vector2 p1(posX1, posY1);
+		p1 = cml::transform_point_2D(m, p1);
+		cml::Vector2 p2(posX1, posY2);
+		p2 = cml::transform_point_2D(m, p2);
+		cml::Vector2 p3(posX2, posY1);
+		p3 = cml::transform_point_2D(m, p3);
+		cml::Vector2 p4(posX2, posY2);
+		p4 = cml::transform_point_2D(m, p4);
         
         _vertexPos[0][0] = p1[0];
 		_vertexPos[0][1] = -p1[1];

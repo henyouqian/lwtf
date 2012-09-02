@@ -1,7 +1,7 @@
 #include "lwShader.h"
 #include "lwRes.h"
-#include "lwtf/lwFileSys.h"
-#include "lwtf/lwLog.h"
+#include "lwFileSys.h"
+#include "lwLog.h"
 #include <map>
 
 namespace lw {

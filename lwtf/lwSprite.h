@@ -38,6 +38,7 @@ namespace lw{
 		void getSize(float &w, float &h);
         void setColor(const Color &color);
         void setBlendMode(BlendMode blendMode);
+        void setMatrix(cml::Matrix3 m);
         void draw();
         
     private:

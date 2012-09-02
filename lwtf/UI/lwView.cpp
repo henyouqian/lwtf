@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "lwtf/lwView.h"
+#include "lwView.h"
 
 namespace lw{
 
