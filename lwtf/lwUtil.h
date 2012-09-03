@@ -17,7 +17,8 @@ public:
 	operator const char*();
 
 private:
-    NSString* _str;
+    struct Data;
+    Data *_p;
 };
 
 class UTF82W
@@ -30,7 +31,8 @@ public:
 	operator const wchar_t*();
 
 private:
-    NSString* _str;
+    struct Data;
+    Data *_p;
 };
 
 

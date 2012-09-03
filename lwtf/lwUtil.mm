@@ -11,37 +11,48 @@ namespace lw{
 
 } //namespace lw
 
+struct W2UTF8::Data{
+    NSString* _str;
+};
 
 W2UTF8::W2UTF8(const wchar_t* w){
-	_str = [[NSString alloc]initWithBytes:w length:wcslen(w)*4 encoding:NSUTF32LittleEndianStringEncoding ];
+    _p = new Data;
+	_p->_str = [[NSString alloc]initWithBytes:w length:wcslen(w)*4 encoding:NSUTF32LittleEndianStringEncoding ];
 }
 W2UTF8::~W2UTF8(){
-	[_str release];
+	[_p->_str release];
+    delete _p;
 }
 int W2UTF8::size(){
-	return [_str length];
+	return [_p->_str length];
 }
 const char* W2UTF8::data(){
-	return [_str UTF8String];
+	return [_p->_str UTF8String];
 }
 
 W2UTF8::operator const char*(){
-	return [_str UTF8String];
+	return [_p->_str UTF8String];
 }
 
+struct UTF82W::Data{
+    NSString* _str;
+};
+
 UTF82W::UTF82W(const char* c){
-    _str = [[NSString alloc]initWithUTF8String: c];
+    _p = new Data;
+    _p->_str = [[NSString alloc]initWithUTF8String: c];
 }
 UTF82W::~UTF82W(){
-	[_str release];
+    [_p->_str release];
+    delete _p;
 }
 int UTF82W::size(){
-	return [_str length];
+	return [_p->_str length];
 }
 const wchar_t* UTF82W::data(){
-	return (const wchar_t*)[_str cStringUsingEncoding:NSUTF32LittleEndianStringEncoding];
+	return (const wchar_t*)[_p->_str cStringUsingEncoding:NSUTF32LittleEndianStringEncoding];
 }
 
 UTF82W:: operator const wchar_t*(){
-	return (const wchar_t*)[_str cStringUsingEncoding:NSUTF32LittleEndianStringEncoding];
+	return (const wchar_t*)[_p->_str cStringUsingEncoding:NSUTF32LittleEndianStringEncoding];
 }

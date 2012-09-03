@@ -38,6 +38,24 @@ namespace lw{
     void soundInit();
     void soundExit();
 	
+    class AudioPlayer{
+    public:
+        AudioPlayer(const char* file);
+        ~AudioPlayer();
+        void play();
+        void pause();
+        void stop();
+        void setCurrentTime(float second);
+        void setNumberOfLoops(int loops);
+        void setVolume(float volume);
+        float getVolume();
+        bool isPlaying();
+        
+    private:
+        struct Data;
+        Data* _pData;
+    };
+    
 
 } //namespace lw
 

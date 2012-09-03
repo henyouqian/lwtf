@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		D030879115EA40BA0031D5D4 /* lwTouchEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D030878D15EA40BA0031D5D4 /* lwTouchEvent.cpp */; };
 		D030879215EA40BA0031D5D4 /* lwTouchEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = D030878E15EA40BA0031D5D4 /* lwTouchEvent.h */; };
-		D03087AE15EA66230031D5D4 /* lwSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D03087AC15EA66230031D5D4 /* lwSound.cpp */; };
+		D03087AE15EA66230031D5D4 /* lwSound.mm in Sources */ = {isa = PBXBuildFile; fileRef = D03087AC15EA66230031D5D4 /* lwSound.mm */; };
 		D03087AF15EA66230031D5D4 /* lwSound.h in Headers */ = {isa = PBXBuildFile; fileRef = D03087AD15EA66230031D5D4 /* lwSound.h */; };
 		D0527AA615E68EA200191554 /* lwFileSys.h in Headers */ = {isa = PBXBuildFile; fileRef = D0527AA215E68EA200191554 /* lwFileSys.h */; };
 		D0527AA715E68EA200191554 /* lwPreInclude.h in Headers */ = {isa = PBXBuildFile; fileRef = D0527AA315E68EA200191554 /* lwPreInclude.h */; };
@@ -167,7 +167,7 @@
 /* Begin PBXFileReference section */
 		D030878D15EA40BA0031D5D4 /* lwTouchEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwTouchEvent.cpp; sourceTree = "<group>"; };
 		D030878E15EA40BA0031D5D4 /* lwTouchEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwTouchEvent.h; sourceTree = "<group>"; };
-		D03087AC15EA66230031D5D4 /* lwSound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwSound.cpp; sourceTree = "<group>"; };
+		D03087AC15EA66230031D5D4 /* lwSound.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = lwSound.mm; sourceTree = "<group>"; };
 		D03087AD15EA66230031D5D4 /* lwSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwSound.h; sourceTree = "<group>"; };
 		D0527AA215E68EA200191554 /* lwFileSys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwFileSys.h; sourceTree = "<group>"; };
 		D0527AA315E68EA200191554 /* lwPreInclude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwPreInclude.h; sourceTree = "<group>"; };
@@ -569,7 +569,7 @@
 			isa = PBXGroup;
 			children = (
 				D0ABF20715EB92DC008CFDD8 /* UI */,
-				D03087AC15EA66230031D5D4 /* lwSound.cpp */,
+				D03087AC15EA66230031D5D4 /* lwSound.mm */,
 				D03087AD15EA66230031D5D4 /* lwSound.h */,
 				D05F7A9315F253CB00C264DB /* lwLabelBm.cpp */,
 				D05F7A9415F253CB00C264DB /* lwLabelBM.h */,
@@ -827,7 +827,7 @@
 				D0678A1015E80E85006FAE24 /* lwColor.cpp in Sources */,
 				D0678A2B15E8E6E3006FAE24 /* lwShader.cpp in Sources */,
 				D030879115EA40BA0031D5D4 /* lwTouchEvent.cpp in Sources */,
-				D03087AE15EA66230031D5D4 /* lwSound.cpp in Sources */,
+				D03087AE15EA66230031D5D4 /* lwSound.mm in Sources */,
 				D0F9B65A15EA83270029146E /* alutBufferData.c in Sources */,
 				D0F9B65B15EA83270029146E /* alutCodec.c in Sources */,
 				D0F9B65C15EA83270029146E /* alutError.c in Sources */,

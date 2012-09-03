@@ -27,11 +27,11 @@ namespace lw{
         void draw();
 		void setPos(float x, float y);
 		void setAlign(LabelAlign align);
-		void setText(const wchar_t *text);
+		void setText(const char *text);
         void setRotate(float rotate);
 		void setScale(float scaleX, float scaleY);
 		void setColor(const lw::Color& color);
-		const wchar_t* getText();
+		const char* getText();
 		void getPos(float &x, float &y);
         void getSize(float &w, float &h);
         
@@ -47,7 +47,8 @@ namespace lw{
 		float _rotate;
         lw::Color _color;
         float _width, _height;
-		
+        std::vector<float> _linesOffset;
+        float _y0;
 		bool _needUpdate;
 	};
     

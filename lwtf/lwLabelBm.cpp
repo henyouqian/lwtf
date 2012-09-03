@@ -4,6 +4,7 @@
 #include "lwSprite.h"
 #include "lwLog.h"
 #include "lwFileSys.h"
+#include "lwUtil.h"
 #include <map>
 
 namespace lw{
@@ -360,7 +361,8 @@ namespace lw{
         return NULL;
     }
     
-    LabelBM::LabelBM(const char *fntFile, bool &ok){
+    LabelBM::LabelBM(const char *fntFile, bool &ok)
+    :_posX(0), _posY(0), _scaleX(1.f), _scaleY(1.f), _rotate(0), _color(255, 255, 255, 255), _align(ALIGN_TOP_LEFT){
         _pRes = FontRes::create(fntFile);
         if ( !_pRes ){
             return;
@@ -375,47 +377,189 @@ namespace lw{
     }
     
     void LabelBM::draw(){
+        if ( _needUpdate ){
+			update();
+		}
+		const wchar_t* text = _text.c_str();
+		size_t len = _text.size();
+		const wchar_t* p = text;
+		float currX = _posX;
+		if ( !_linesOffset.empty() ){
+			currX += _linesOffset[0];
+		}
+		float currY = _y0;
         
+		int currLine = 1;
+		const FontRes::CommonInfo& comInfo = _pRes->getCommonInfo();
+		const std::map<wchar_t, FontRes::CharInfo>& charInfoMap = _pRes->getCharInfoMap();
+		const std::vector<Sprite*> sprites = _pRes->getSprites();
+		while ( p < text+len ){
+			if ( *p == '\n' ){
+				currY += comInfo.lineHeight*_scaleY;
+				currX = _posX;
+				if ( currLine < (int)_linesOffset.size() ){
+					currX += _linesOffset[currLine];
+				}
+				++currLine;
+			}else{
+				std::map<wchar_t, FontRes::CharInfo>::const_iterator it = charInfoMap.find(*p);
+				if ( it == charInfoMap.end() ){
+                    int n = *p;
+                    lwinfo(n);
+					it = charInfoMap.find(' ');
+					if ( it == charInfoMap.end() ){
+						currX += 3;
+						++p;
+						continue;
+					}
+				}
+				const FontRes::CharInfo& charInfo = it->second;
+				lwassert(charInfo.page < sprites.size());
+                Sprite* pSprite = sprites[charInfo.page];
+				pSprite->setUV(charInfo.x, charInfo.y, charInfo.width, charInfo.height);
+				if ( _rotate == 0 ){
+					pSprite->setPos((float)currX+charInfo.xoffset, (float)currY+charInfo.yoffset*_scaleY);
+					pSprite->setScale(_scaleX, _scaleY);
+					pSprite->setColor(_color);
+					pSprite->setRotate(0);
+					pSprite->draw();
+				}else{
+					cml::Vector2 v2;
+					v2[0] = (float)currX+charInfo.xoffset-_posX;
+					v2[1] = (float)currY+charInfo.yoffset-_posY;
+					v2 = cml::rotate_vector_2D(v2, _rotate);
+					pSprite->setPos(_posX+v2[0], _posY+v2[1]);
+					pSprite->setScale(_scaleX, _scaleY);
+					pSprite->setRotate(_rotate);
+					pSprite->setColor(_color);
+					pSprite->draw();
+				}
+				currX += charInfo.xadvance*_scaleX;
+			}
+			++p;
+		}
     }
     
     void LabelBM::update(){
+        _needUpdate = false;
         
+		_width = 0.f;
+		_height = 0.f;
+		_linesOffset.clear();
+        
+        const std::map<wchar_t, FontRes::CharInfo>& charInfoMap = _pRes->getCharInfoMap();
+		const FontRes::CommonInfo& comInfo = _pRes->getCommonInfo();
+		size_t len = _text.length();
+		const wchar_t* p = _text.c_str();
+        
+		float x = 0;
+		int alignH = _align % 3;
+		while ( 1 ){
+			if ( *p == '\n' || p == _text.c_str()+len ){
+				x = x*_scaleX;
+				switch (alignH)
+				{
+                    case 0:
+                        _linesOffset.push_back(0);
+                        break;
+                    case 1:
+                        _linesOffset.push_back((-x)*.5f);
+                        break;
+                    case 2:
+                        _linesOffset.push_back(-x);
+                        break;
+				}
+				_width = std::max(_width, x);
+				_height += comInfo.lineHeight;
+				x = 0;
+				if ( p == _text.c_str()+len ){
+					break;
+				}
+			}else{
+				std::map<wchar_t, FontRes::CharInfo>::const_iterator it = charInfoMap.find(*p);
+				if ( it == charInfoMap.end() ){
+					it = charInfoMap.find(' ');
+					if ( it == charInfoMap.end() ){
+						x += 10.f;
+						++p;
+						continue;
+					}
+				}
+				const FontRes::CharInfo& charInfo = it->second;
+				x += charInfo.xadvance;
+			}
+			++p;
+		}
+		int alignV = _align / 3;
+		switch (alignV)
+		{
+            case 0:
+                _y0 = _posY;
+                break;
+            case 1:
+                _y0 = _posY-.5f*_height*_scaleY;
+                break;
+            case 2:
+                _y0 = _posY-_height*_scaleY;
+                break;
+		}
     }
     
     void LabelBM::setPos(float x, float y){
-        
+        _needUpdate = true;
+        _posX = x;
+        _posY = y;
     }
     
     void LabelBM::setAlign(LabelAlign align){
-        
+        if ( _align != align ){
+            _needUpdate = true;
+            _align = align;
+        }
     }
     
-    void LabelBM::setText(const wchar_t *text){
-        
+    void LabelBM::setText(const char *text){
+        if ( text == NULL ){
+            text = "";
+        }
+        UTF82W w(text);
+        if ( _text.compare(w) != 0 ){
+            _needUpdate = true;
+            _text = w;
+        }
     }
     
     void LabelBM::setRotate(float rotate){
-        
+        if ( _rotate != rotate ){
+            _needUpdate = true;
+            _rotate = rotate;
+        }
     }
     
     void LabelBM::setScale(float scaleX, float scaleY){
-        
+        if ( _scaleX != scaleX || _scaleY != scaleY ){
+            _needUpdate = true;
+            _scaleX = scaleX;
+            _scaleY = scaleY;
+        }
     }
     
     void LabelBM::setColor(const lw::Color& color){
-        
+        _color = color;
     }
     
-    const wchar_t* LabelBM::getText(){
-        return NULL;
+    const char* LabelBM::getText(){
+        return W2UTF8(_text.c_str());
     }
     
     void LabelBM::getPos(float &x, float &y){
-        
+        x = _posX;
+        y = _posY;
     }
     
     void LabelBM::getSize(float &w, float &h){
-        
+        w = _width;
+        h = _height;
     }
     
 	
