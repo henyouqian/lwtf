@@ -226,26 +226,43 @@ namespace lw{
         AudioPlayerDelegate *delegate;
     };
     
-    AudioPlayer::AudioPlayer(const char* file){
-        _pData = new Data;
-        
+    AudioPlayer* AudioPlayer::create(const char *file){
+        bool ok = false;
+        AudioPlayer *p = new AudioPlayer(file, ok);
+        if ( p && ok ){
+            return p;
+        }else if ( p ){
+            delete p;
+        }
+        return NULL;
+    }
+    
+    AudioPlayer::AudioPlayer(const char* file, bool &ok)
+    :_pData(NULL){
         _f f(file);
         const char* str = f.getPath();
         NSURL *fileURL = [[NSURL alloc] initFileURLWithPath: [NSString stringWithUTF8String : str]];
         
-        _pData->player = [[AVAudioPlayer alloc] initWithContentsOfURL: fileURL
+        AVAudioPlayer* pPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL: fileURL
                                                                 error: nil];
-        [fileURL release];
         
-        _pData->delegate = [[AudioPlayerDelegate alloc] init];
-        [_pData->player setDelegate:_pData->delegate];
-        [_pData->player prepareToPlay];
+        [fileURL release];
+        if ( pPlayer ){
+            _pData = new Data;
+            _pData->player = pPlayer;
+            _pData->delegate = [[AudioPlayerDelegate alloc] init];
+            [_pData->player setDelegate:_pData->delegate];
+            [_pData->player prepareToPlay];
+        }
+        ok = true;
     }
     
     AudioPlayer::~AudioPlayer(){
-        [_pData->player release];
-        [_pData->delegate release];
-        delete _pData;
+        if ( _pData ){
+            [_pData->player release];
+            [_pData->delegate release];
+            delete _pData;
+        }
     }
     
     void AudioPlayer::play(){

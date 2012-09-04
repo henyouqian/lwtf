@@ -40,7 +40,7 @@ namespace lw{
 	
     class AudioPlayer{
     public:
-        AudioPlayer(const char* file);
+        static AudioPlayer* create(const char *file);
         ~AudioPlayer();
         void play();
         void pause();
@@ -52,6 +52,7 @@ namespace lw{
         bool isPlaying();
         
     private:
+        AudioPlayer(const char *file, bool &ok);
         struct Data;
         Data* _pData;
     };
