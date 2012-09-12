@@ -9,7 +9,7 @@ namespace lw {
         void main();
         void draw();
         bool hasRunningTask();
-        void event(const TouchEvent& evt);
+        bool event(const TouchEvent& evt);
         
     private:
         std::list<Task*> _tasks;
@@ -52,12 +52,15 @@ namespace lw {
         }
     }
     
-    void TaskMgr::event(const TouchEvent& evt){
+    bool TaskMgr::event(const TouchEvent& evt){
         std::list<Task*>::iterator it = _tasks.begin();
         std::list<Task*>::iterator itend = _tasks.end();
         for ( ; it != itend; ++it ){
-            (*it)->event(evt);
+            if ( (*it)->event(evt) ){
+                return true;
+            }
         }
+        return false;
     }
     
     bool TaskMgr::hasRunningTask(){
@@ -118,10 +121,11 @@ namespace lw {
         }
     }
     
-    void Task::event(const TouchEvent& evt){
+    bool Task::event(const TouchEvent& evt){
         if ( _state == RUNNING && _isVisible && !_isPaused ){
-            vEvent(evt);
+            return vEvent(evt);
         }
+        return false;
     }
     
     void Task::updateState(){
@@ -174,8 +178,8 @@ namespace lw {
         _taskMgr.draw();
     }
     
-    void taskEvent(const TouchEvent& evt){
-        _taskMgr.event(evt);
+    bool taskEvent(const TouchEvent& evt){
+        return _taskMgr.event(evt);
     }
     
 } //namespace lw

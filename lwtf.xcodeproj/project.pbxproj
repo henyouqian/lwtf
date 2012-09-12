@@ -11,6 +11,10 @@
 		D030879215EA40BA0031D5D4 /* lwTouchEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = D030878E15EA40BA0031D5D4 /* lwTouchEvent.h */; };
 		D03087AE15EA66230031D5D4 /* lwSound.mm in Sources */ = {isa = PBXBuildFile; fileRef = D03087AC15EA66230031D5D4 /* lwSound.mm */; };
 		D03087AF15EA66230031D5D4 /* lwSound.h in Headers */ = {isa = PBXBuildFile; fileRef = D03087AD15EA66230031D5D4 /* lwSound.h */; };
+		D04B25BC15FF3D26002B64CD /* lwHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = D04B25BA15FF3D26002B64CD /* lwHTTPClient.h */; };
+		D04B25BD15FF3D26002B64CD /* lwHTTPClient.mm in Sources */ = {isa = PBXBuildFile; fileRef = D04B25BB15FF3D26002B64CD /* lwHTTPClient.mm */; };
+		D04B25DA1600B337002B64CD /* lwCheckbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D04B25D81600B337002B64CD /* lwCheckbox.cpp */; };
+		D04B25DB1600B337002B64CD /* lwCheckbox.h in Headers */ = {isa = PBXBuildFile; fileRef = D04B25D91600B337002B64CD /* lwCheckbox.h */; };
 		D0527AA615E68EA200191554 /* lwFileSys.h in Headers */ = {isa = PBXBuildFile; fileRef = D0527AA215E68EA200191554 /* lwFileSys.h */; };
 		D0527AA715E68EA200191554 /* lwPreInclude.h in Headers */ = {isa = PBXBuildFile; fileRef = D0527AA315E68EA200191554 /* lwPreInclude.h */; };
 		D0527AA815E68EA200191554 /* lwSingleton.h in Headers */ = {isa = PBXBuildFile; fileRef = D0527AA415E68EA200191554 /* lwSingleton.h */; };
@@ -169,6 +173,10 @@
 		D030878E15EA40BA0031D5D4 /* lwTouchEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwTouchEvent.h; sourceTree = "<group>"; };
 		D03087AC15EA66230031D5D4 /* lwSound.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = lwSound.mm; sourceTree = "<group>"; };
 		D03087AD15EA66230031D5D4 /* lwSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwSound.h; sourceTree = "<group>"; };
+		D04B25BA15FF3D26002B64CD /* lwHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lwHTTPClient.h; path = lwtf/lwHTTPClient.h; sourceTree = SOURCE_ROOT; };
+		D04B25BB15FF3D26002B64CD /* lwHTTPClient.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = lwHTTPClient.mm; path = lwtf/lwHTTPClient.mm; sourceTree = SOURCE_ROOT; };
+		D04B25D81600B337002B64CD /* lwCheckbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwCheckbox.cpp; sourceTree = "<group>"; };
+		D04B25D91600B337002B64CD /* lwCheckbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwCheckbox.h; sourceTree = "<group>"; };
 		D0527AA215E68EA200191554 /* lwFileSys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwFileSys.h; sourceTree = "<group>"; };
 		D0527AA315E68EA200191554 /* lwPreInclude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwPreInclude.h; sourceTree = "<group>"; };
 		D0527AA415E68EA200191554 /* lwSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwSingleton.h; sourceTree = "<group>"; };
@@ -529,6 +537,8 @@
 		D0ABF20715EB92DC008CFDD8 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				D04B25D81600B337002B64CD /* lwCheckbox.cpp */,
+				D04B25D91600B337002B64CD /* lwCheckbox.h */,
 				D0ABF20D15EBB911008CFDD8 /* lwButton.cpp */,
 				D0ABF20E15EBB911008CFDD8 /* lwButton.h */,
 				D0ABF20815EB92DC008CFDD8 /* lwView.cpp */,
@@ -571,6 +581,8 @@
 				D0ABF20715EB92DC008CFDD8 /* UI */,
 				D03087AC15EA66230031D5D4 /* lwSound.mm */,
 				D03087AD15EA66230031D5D4 /* lwSound.h */,
+				D04B25BA15FF3D26002B64CD /* lwHTTPClient.h */,
+				D04B25BB15FF3D26002B64CD /* lwHTTPClient.mm */,
 				D05F7A9315F253CB00C264DB /* lwLabelBm.cpp */,
 				D05F7A9415F253CB00C264DB /* lwLabelBM.h */,
 				D030878D15EA40BA0031D5D4 /* lwTouchEvent.cpp */,
@@ -761,6 +773,8 @@
 				D0ABF20B15EB92DC008CFDD8 /* lwView.h in Headers */,
 				D0ABF21015EBB911008CFDD8 /* lwButton.h in Headers */,
 				D05F7A9615F253CB00C264DB /* lwLabelBM.h in Headers */,
+				D04B25BC15FF3D26002B64CD /* lwHTTPClient.h in Headers */,
+				D04B25DB1600B337002B64CD /* lwCheckbox.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -841,6 +855,8 @@
 				D0ABF20A15EB92DC008CFDD8 /* lwView.cpp in Sources */,
 				D0ABF20F15EBB911008CFDD8 /* lwButton.cpp in Sources */,
 				D05F7A9515F253CB00C264DB /* lwLabelBm.cpp in Sources */,
+				D04B25BD15FF3D26002B64CD /* lwHTTPClient.mm in Sources */,
+				D04B25DA1600B337002B64CD /* lwCheckbox.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

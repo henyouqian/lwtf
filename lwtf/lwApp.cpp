@@ -2,6 +2,7 @@
 #include "lwTask.h"
 #include "lwSprite.h"
 #include "lwSound.h"
+#include "lwView.h"
 
 namespace lw {
     
@@ -21,6 +22,7 @@ namespace lw {
 
     void App::draw(){
         taskDraw();
+        viewDraw();
         spriteFlush();
     }
     

@@ -2,13 +2,20 @@
 #include "lwView.h"
 
 namespace lw{
+    
+    namespace{
+        View _rootView(NULL);
+    }
 
     View::View(View* pParent)
-    :_visible(true), _enable(true), _posX(0.f), _posY(0.f), _screenX(0.f), _screenY(0.f), _pParent(pParent), _w(0.f), _h(0.f){
-        updateScreenPos();
-        if ( pParent ){
-            pParent->addChild(this);
+    :_visible(true), _enable(true), _posX(0.f), _posY(0.f), _screenX(0.f), _screenY(0.f), _w(0.f), _h(0.f){
+        if ( pParent == NULL && this != &_rootView ){
+            pParent = &_rootView;
         }
+        _pParent = pParent;
+        updateScreenPos();
+        if ( _pParent )
+            _pParent->addChild(this);
     }
     
     View::~View(){
@@ -96,5 +103,12 @@ namespace lw{
         _children.push_back(pView);
     }
     
+    void viewDraw(){
+        _rootView.draw();
+    }
+    
+    bool viewEvent(const lw::TouchEvent& evt){
+        return _rootView.event(evt);
+    }
 
 } //namespace lw

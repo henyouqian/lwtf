@@ -40,6 +40,9 @@ namespace lw{
     public:
         void addChild(View* pView);
     };
+    
+    void viewDraw();
+    bool viewEvent(const lw::TouchEvent& evt);
 
 } //namespace lw
 

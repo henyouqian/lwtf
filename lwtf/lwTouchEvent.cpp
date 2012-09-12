@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "lwTouchEvent.h"
 #include "lwTask.h"
+#include "lwView.h"
 
 namespace lw{
     
@@ -23,7 +24,8 @@ namespace lw{
                 evt.prx = prx;
                 evt.pry = pry;
                 _events.push_back(evt);
-                taskEvent(_events.back());
+                if ( !viewEvent(_events.back()) )
+                    taskEvent(_events.back());
             }else if (type == TouchEvent::MOVE){
                 std::list<TouchEvent>::iterator it = _events.begin();
                 std::list<TouchEvent>::iterator itend = _events.end();
@@ -35,7 +37,9 @@ namespace lw{
                         evt.y = y;
                         evt.prx = prx;
                         evt.pry = pry;
-                        taskEvent(evt);
+                        if ( !viewEvent(evt) )
+                            taskEvent(evt);
+                        break;
                     }
                 }
             }else if ( type == TouchEvent::UNTOUCH ){
@@ -50,8 +54,10 @@ namespace lw{
                         evt.y = y;
                         evt.prx = prx;
                         evt.pry = pry;
-                        taskEvent(evt);
+                        if ( !viewEvent(evt) )
+                            taskEvent(evt);
                         _events.erase(it);
+                        break;
                     }
                 }
             }
