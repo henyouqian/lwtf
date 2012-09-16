@@ -25,7 +25,7 @@
 		D05F7A9615F253CB00C264DB /* lwLabelBM.h in Headers */ = {isa = PBXBuildFile; fileRef = D05F7A9415F253CB00C264DB /* lwLabelBM.h */; };
 		D06788CB15E69804006FAE24 /* lwRes.h in Headers */ = {isa = PBXBuildFile; fileRef = D06788CA15E69804006FAE24 /* lwRes.h */; };
 		D06788DD15E6A22B006FAE24 /* lwApp.h in Headers */ = {isa = PBXBuildFile; fileRef = D06788DB15E6A22B006FAE24 /* lwApp.h */; };
-		D06788DE15E6A22B006FAE24 /* lwApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D06788DC15E6A22B006FAE24 /* lwApp.cpp */; };
+		D06788DE15E6A22B006FAE24 /* lwApp.mm in Sources */ = {isa = PBXBuildFile; fileRef = D06788DC15E6A22B006FAE24 /* lwApp.mm */; };
 		D06788EA15E6B416006FAE24 /* lwTask.h in Headers */ = {isa = PBXBuildFile; fileRef = D06788E815E6B415006FAE24 /* lwTask.h */; };
 		D06788EB15E6B416006FAE24 /* lwTask.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D06788E915E6B415006FAE24 /* lwTask.cpp */; };
 		D06788EE15E6C9A3006FAE24 /* lwTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D06788EC15E6C9A3006FAE24 /* lwTexture.cpp */; };
@@ -166,6 +166,8 @@
 		D0F9B66215EA83270029146E /* alutUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = D0F9B65615EA83270029146E /* alutUtil.c */; };
 		D0F9B66315EA83270029146E /* alutVersion.c in Sources */ = {isa = PBXBuildFile; fileRef = D0F9B65715EA83270029146E /* alutVersion.c */; };
 		D0F9B66415EA83270029146E /* alutWaveform.c in Sources */ = {isa = PBXBuildFile; fileRef = D0F9B65815EA83270029146E /* alutWaveform.c */; };
+		D0FC66A716044E04005955CC /* tinyxml2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0FC66A516044E04005955CC /* tinyxml2.cpp */; };
+		D0FC66A816044E04005955CC /* tinyxml2.h in Headers */ = {isa = PBXBuildFile; fileRef = D0FC66A616044E04005955CC /* tinyxml2.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -187,7 +189,7 @@
 		D05F7A9415F253CB00C264DB /* lwLabelBM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwLabelBM.h; sourceTree = "<group>"; };
 		D06788CA15E69804006FAE24 /* lwRes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwRes.h; sourceTree = "<group>"; };
 		D06788DB15E6A22B006FAE24 /* lwApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwApp.h; sourceTree = "<group>"; };
-		D06788DC15E6A22B006FAE24 /* lwApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwApp.cpp; sourceTree = "<group>"; };
+		D06788DC15E6A22B006FAE24 /* lwApp.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = lwApp.mm; sourceTree = "<group>"; };
 		D06788E815E6B415006FAE24 /* lwTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwTask.h; sourceTree = "<group>"; };
 		D06788E915E6B415006FAE24 /* lwTask.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwTask.cpp; sourceTree = "<group>"; };
 		D06788EC15E6C9A3006FAE24 /* lwTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwTexture.cpp; sourceTree = "<group>"; };
@@ -330,6 +332,8 @@
 		D0F9B65615EA83270029146E /* alutUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alutUtil.c; sourceTree = "<group>"; };
 		D0F9B65715EA83270029146E /* alutVersion.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alutVersion.c; sourceTree = "<group>"; };
 		D0F9B65815EA83270029146E /* alutWaveform.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alutWaveform.c; sourceTree = "<group>"; };
+		D0FC66A516044E04005955CC /* tinyxml2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml2.cpp; sourceTree = "<group>"; };
+		D0FC66A616044E04005955CC /* tinyxml2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml2.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -550,6 +554,7 @@
 		D0CB111D15E68524003DF8B6 = {
 			isa = PBXGroup;
 			children = (
+				D0FC66A416044E04005955CC /* tinyxml2 */,
 				D0F9B64C15EA83270029146E /* ALUT */,
 				D067890715E6CBBC006FAE24 /* cml */,
 				D06788F215E6CBB6006FAE24 /* soil */,
@@ -598,7 +603,7 @@
 				D06788E815E6B415006FAE24 /* lwTask.h */,
 				D06788E915E6B415006FAE24 /* lwTask.cpp */,
 				D06788DB15E6A22B006FAE24 /* lwApp.h */,
-				D06788DC15E6A22B006FAE24 /* lwApp.cpp */,
+				D06788DC15E6A22B006FAE24 /* lwApp.mm */,
 				D06788CA15E69804006FAE24 /* lwRes.h */,
 				D0527AA215E68EA200191554 /* lwFileSys.h */,
 				D0527AAA15E68F0800191554 /* lwFileSys.mm */,
@@ -637,6 +642,15 @@
 				D0F9B65815EA83270029146E /* alutWaveform.c */,
 			);
 			path = ALUT;
+			sourceTree = "<group>";
+		};
+		D0FC66A416044E04005955CC /* tinyxml2 */ = {
+			isa = PBXGroup;
+			children = (
+				D0FC66A516044E04005955CC /* tinyxml2.cpp */,
+				D0FC66A616044E04005955CC /* tinyxml2.h */,
+			);
+			path = tinyxml2;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -775,6 +789,7 @@
 				D05F7A9615F253CB00C264DB /* lwLabelBM.h in Headers */,
 				D04B25BC15FF3D26002B64CD /* lwHTTPClient.h in Headers */,
 				D04B25DB1600B337002B64CD /* lwCheckbox.h in Headers */,
+				D0FC66A816044E04005955CC /* tinyxml2.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -830,7 +845,7 @@
 			files = (
 				D0527AAC15E68F0800191554 /* lwFileSys.mm in Sources */,
 				D0527AAD15E68F0800191554 /* lwUtil.mm in Sources */,
-				D06788DE15E6A22B006FAE24 /* lwApp.cpp in Sources */,
+				D06788DE15E6A22B006FAE24 /* lwApp.mm in Sources */,
 				D06788EB15E6B416006FAE24 /* lwTask.cpp in Sources */,
 				D06788EE15E6C9A3006FAE24 /* lwTexture.cpp in Sources */,
 				D06788FD15E6CBB6006FAE24 /* image_DXT.c in Sources */,
@@ -857,6 +872,7 @@
 				D05F7A9515F253CB00C264DB /* lwLabelBm.cpp in Sources */,
 				D04B25BD15FF3D26002B64CD /* lwHTTPClient.mm in Sources */,
 				D04B25DA1600B337002B64CD /* lwCheckbox.cpp in Sources */,
+				D0FC66A716044E04005955CC /* tinyxml2.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

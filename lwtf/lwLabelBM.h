@@ -50,6 +50,7 @@ namespace lw{
         std::vector<float> _linesOffset;
         float _y0;
 		bool _needUpdate;
+        bool _isHD;
 	};
     
 } //namespace lw

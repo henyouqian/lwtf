@@ -19,6 +19,9 @@ namespace lw{
     }
     
     View::~View(){
+        if ( _pParent ){
+            _pParent->removeChild(this);
+        }
         std::list<View*>::iterator it = _children.begin();
         std::list<View*>::iterator itend = _children.end();
         for ( ; it != itend; ++it ){
@@ -27,7 +30,7 @@ namespace lw{
     }
     
     bool View::event(const lw::TouchEvent& evt){
-        if ( _enable ){
+        if ( _enable && _visible ){
             std::list<View*>::iterator it = _children.begin();
             std::list<View*>::iterator itend = _children.end();
             for ( ; it != itend; ++it ){
@@ -101,6 +104,10 @@ namespace lw{
     
     void View::addChild(View* pView){
         _children.push_back(pView);
+    }
+    
+    void View::removeChild(View* pView){
+        _children.remove(pView);
     }
     
     void viewDraw(){

@@ -19,10 +19,10 @@ namespace lw{
     Checkbox::Checkbox(CheckboxCallback* pCallback, View* pParent, const char *file, int w, int h, int uUp, int vUp, int uDown, int vDown, int uDisable, int vDisable, bool &ok)
     :View(pParent), _pCallback(pCallback), _pEvt(NULL), _check(false)
     ,_extTop(0),_extBottom(0),_extLeft(0),_extRight(0){
-        _pSptUp = Sprite::create(file);
-        _pSptDown = Sprite::create(file);
+        _pSptUp = Sprite::createFromFile(file);
+        _pSptDown = Sprite::createFromFile(file);
         if ( vDisable >= 0 && uDisable >= 0 ){
-            _pSptDisable = Sprite::create(file);
+            _pSptDisable = Sprite::createFromFile(file);
         }else{
             _pSptDisable = NULL;
         }

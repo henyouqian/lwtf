@@ -12,5 +12,6 @@
 #define HAVE_UNISTD_H 1
 
 #ifdef __cplusplus
-#include "lwtf/lwPreInclude.h"
+#include "lwPreInclude.h"
+#include "lwLog.h"
 #endif

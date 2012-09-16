@@ -22,7 +22,8 @@ namespace lw{
     
 	class Sprite{
     public:
-        static Sprite* create(const char* file);
+        static Sprite* createFromFile(const char* file);
+        static Sprite* createFromAtlas(const char* key);
         ~Sprite();
         void setUV(float u, float v, float w, float h);
         void getUV(float &u, float &v, float &w, float &h);
@@ -40,8 +41,10 @@ namespace lw{
         void setBlendMode(BlendMode blendMode);
         void setMatrix(cml::Matrix3 m);
         void draw();
+        bool is2x();
         
     private:
+        void uvInit();
         TextureRes* _pTextureRes;
         float _ancX, _ancY;
 		float _posX, _posY;
@@ -53,15 +56,40 @@ namespace lw{
         cml::Vector2 _vertexPos[4];
         bool _needUpdate;
         BlendMode _blendMode;
+        bool _is2x;
         
-        Sprite(const char *file, bool &ok);
+        Sprite(const char *file, bool fromAtlas, bool &ok);
+        void loadFromFile(const char *file, bool is2x);
+        void loadFromAtlas(const char *key, bool is2x);
         void update();
     };
+    
+    class Sprite9{
+	public:
+		static Sprite9* create(const char* file, int u, int v, int w1, int w2, int w3, int h1, int h2, int h3);
+		~Sprite9();
+		void setPos(float x, float y);
+		void setSize(float w, float h);
+		void setColor(const lw::Color& color);
+		void draw();
+		
+	private:
+		Sprite9(const char* fileName, int u, int v, int w1, int w2, int w3, int h1, int h2, int h3, bool& ok);
+        void update();
+		Sprite* _pSprites[9];
+		float _uvX[3], _uvY[3], _uvW[3], _uvH[3];
+		float _x[3], _y[3], _w[3], _h[3];
+		float _width, _height;
+		bool _needUpdate;
+        bool _is2x;
+	}; 
     
     void spriteInit();
     void spriteExit();
     void spriteFlush();
     void spriteCollectVetices(SpriteVertex *vertices, int numVertices, Color &color, BlendMode blendMode, GLuint textureId);
+    
+    void addAtlas(const char *file);
 	
 } //namespace lw
 

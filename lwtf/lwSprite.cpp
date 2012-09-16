@@ -1,9 +1,21 @@
+#include "stdafx.h"
 #include "lwSprite.h"
 #include "lwTexture.h"
 #include "lwShader.h"
 #include "lwApp.h"
+#include "lwFileSys.h"
+#include "tinyxml2/tinyxml2.h"
+#include <map>
 
 namespace lw {
+    
+    namespace {
+        struct AtlasInfo{
+            std::string file;
+            int u, v, w, h;
+        };
+        std::map<std::string, AtlasInfo> _atlasMap;
+    }
     
     class SpriteVertexBuffer{
     public:
@@ -81,6 +93,8 @@ namespace lw {
         glEnable(GL_TEXTURE_2D);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, _currTextureId);
+        //glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+		//glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
         glUniform1i(_samplerLocation, 0);
         glDisable(GL_CULL_FACE);
 		glDepthMask(GL_FALSE);
@@ -116,9 +130,9 @@ namespace lw {
     
     //====================================================
     
-	Sprite* Sprite::create(const char *file){
+	Sprite* Sprite::createFromFile(const char *file){
         bool ok = false;
-        Sprite* p = new Sprite(file, ok);
+        Sprite* p = new Sprite(file, false, ok);
         if ( p ){
             if ( ok ){
                 return p;
@@ -130,19 +144,64 @@ namespace lw {
         return NULL;
     }
     
-    Sprite::Sprite(const char *file, bool &ok){
+    Sprite* Sprite::createFromAtlas(const char* key){
+        bool ok = false;
+        Sprite* p = new Sprite(key, true, ok);
+        if ( p ){
+            if ( ok ){
+                return p;
+            }else{
+                delete p;
+                return NULL;
+            }
+        }
+        return NULL;
+        return NULL;
+    }
+    
+    namespace{
+        void makeFileName2x(std::string& name){
+            int n = name.find('.');
+            std::string ext = &name[n];
+            name.resize(n);
+            name.append("_2x");
+            name.append(ext);
+        }
+    }
+    
+    Sprite::Sprite(const char *file, bool fromAtlas, bool &ok){
         ok = false;
-        _pTextureRes = TextureRes::create(file);
+        _ancX = _ancY = 0.f;
+        _posX = _posY = 0.f;
+        _rotate = 0.f;
+        _scaleX = _scaleY = 1.f;
+        _color.set(255, 255, 255, 255);
+        _blendMode = BLEND_NORMAL;
+        _needUpdate = true;
+        _pTextureRes = NULL;
+        
+        _is2x = false;
+        if ( lw::App::s().getScreenScale() == 2.f ){
+            if ( fromAtlas ){
+                loadFromAtlas(file, true);
+            }else{
+                std::string file2x = file;
+                makeFileName2x(file2x);
+                loadFromFile(file2x.c_str(), true);
+            }
+        }
+        if ( _pTextureRes ){
+            _is2x = true;
+        }else{
+            if ( fromAtlas ){
+                loadFromAtlas(file, false);
+            }else{
+                loadFromFile(file, false);
+            }
+        }
+        
         if ( _pTextureRes ){
             ok = true;
-            _ancX = _ancY = 0.f;
-            _posX = _posY = 0.f;
-            _rotate = 0.f;
-            _scaleX = _scaleY = 1.f;
-            _color.set(255, 255, 255, 255);
-            setUV(0, 0, -1, -1);
-            _blendMode = BLEND_NORMAL;
-            _needUpdate = true;
         }
     }
     
@@ -152,24 +211,60 @@ namespace lw {
 		}
     }
     
+    void Sprite::loadFromFile(const char *file, bool is2x){
+        _pTextureRes = TextureRes::create(file);
+        if ( _pTextureRes ){
+            _is2x = is2x;
+            uvInit();
+        }
+    }
+    
+    void Sprite::loadFromAtlas(const char *key, bool is2x){
+        std::map<std::string, AtlasInfo>::iterator it = _atlasMap.find(key);
+        if ( it != _atlasMap.end() ){
+            AtlasInfo& atlas = it->second;
+            std::string filename = atlas.file;
+            if ( is2x ){
+                makeFileName2x(filename);
+            }
+            _pTextureRes = TextureRes::create(filename.c_str());
+            if ( _pTextureRes ){
+                _is2x = is2x; 
+                setUV(atlas.u, atlas.v, atlas.w, atlas.h);
+            }
+        }
+    }
+    
     void Sprite::setUV(float u, float v, float w, float h){
         float texW = (float)_pTextureRes->getWidth();
         float texH = (float)_pTextureRes->getHeight();
         
-        if ( w < 0 ){
-			_w = texW;
-		}else{
-			_w = w;
-		}
-		if ( h < 0 ){
-			_h = texH;
-		}else{
-			_h = h;
-		}
+        if ( _is2x ){
+            texW *= .5f;
+            texH *= .5f;
+        }
+        
+        _u = u;
+        _v = v;
+        _w = w;
+        _h = h;
+        
         _u1 = u/texW;
 		_v1 = v/texH;
         _u2 = (u+_w)/texW;
 		_v2 = (v+_h)/texH;
+    }
+    
+    void Sprite::uvInit(){
+        _u = _v = 0.f;
+        _w = (float)_pTextureRes->getWidth();
+        _h = (float)_pTextureRes->getHeight();
+        if ( _is2x ){
+            _w *= .5f;
+            _h *= .5f;
+        }
+        _u1 = _v1 = 0.f;
+        _u2 = _v2 = 1.f;
     }
     
     void Sprite::getUV(float &u, float &v, float &w, float &h){
@@ -224,12 +319,12 @@ namespace lw {
     }
     
     void Sprite::setSize(float w, float h){
-        setScale(w/_pTextureRes->getWidth(), h/_pTextureRes->getHeight());
+        setScale(w/_w, h/_h);
     }
     
     void Sprite::getSize(float &w, float &h){
-        w = _pTextureRes->getWidth()*_scaleX;
-        h = _pTextureRes->getHeight()*_scaleY;
+        w = _w*_scaleX;
+        h = _h*_scaleY;
     }
     
     void Sprite::setColor(const Color& color){
@@ -247,8 +342,14 @@ namespace lw {
 			cml::matrix_rotation_2D(m1, _rotate);
 			m *= m1;
 		}
-		if ( _scaleX != 1.f || _scaleY != 1.f ){
-			cml::matrix_scale_2D(m1, _scaleX, _scaleY);
+        float scaleX = _scaleX;
+        float scaleY = _scaleY;
+        if ( _is2x ){
+            scaleX *= .5f;
+            scaleY *= .5f;
+        }
+		if ( scaleX != 1.f || scaleY != 1.f ){
+            cml::matrix_scale_2D(m1, scaleX, scaleY);
 			m *= m1;
 		}
         
@@ -337,8 +438,14 @@ namespace lw {
 			cml::matrix_rotation_2D(m1, _rotate);
 			m *= m1;
 		}
-		if ( _scaleX != 1.f || _scaleY != 1.f ){
-			cml::matrix_scale_2D(m1, _scaleX, _scaleY);
+        float scaleX = _scaleX;
+        float scaleY = _scaleY;
+//        if ( _is2x ){
+//            scaleX *= .5f;
+//            scaleY *= .5f;
+//        }
+		if ( scaleX != 1.f || scaleY != 1.f ){
+            cml::matrix_scale_2D(m1, scaleX, scaleY);
 			m *= m1;
 		}
         
@@ -369,6 +476,112 @@ namespace lw {
 		_vertexPos[3][1] = -p4[1];
     }
     
+    bool Sprite::is2x(){
+        return _is2x;
+    }
+    
+    //===============================================
+    Sprite9* Sprite9::create(const char* file, int uvX, int uvY, int uvW1, int uvW2, int uvW3, int uvH1, int uvH2, int uvH3){
+		lwassert(file);
+		bool ok = false;
+		Sprite9* pSprite9 = new Sprite9(file, uvX, uvY, uvW1, uvW2, uvW3, uvH1, uvH2, uvH3, ok);
+		lwassert(pSprite9);
+		if ( !ok ){
+			delete pSprite9;
+			return NULL;
+		}
+		return pSprite9;
+	}
+	Sprite9::Sprite9(const char* file, int uvX, int uvY, int uvW1, int uvW2, int uvW3, int uvH1, int uvH2, int uvH3, bool& ok):_needUpdate(true), _is2x(false){
+        
+		_x[0] = 0.f;
+		_y[0] = 0.f;
+        
+		_uvW[0] = uvW1;
+		_uvW[1] = uvW2;
+		_uvW[2] = uvW3;
+        
+		_uvH[0] = uvH1;
+		_uvH[1] = uvH2;
+		_uvH[2] = uvH3;
+        
+		_uvX[0] = uvX;
+		_uvX[1] = _uvX[0] + uvW1;
+		_uvX[2] = _uvX[1] + uvW2;
+        
+		_uvY[0] = uvY;
+		_uvY[1] = _uvY[0] + uvH1;
+		_uvY[2] = _uvY[1] + uvH2;
+        
+		_width = (float)(_uvW[0] + _uvW[1] + _uvW[2]);
+		_height = (float)(_uvH[0] + _uvH[1] + _uvH[2]);
+        
+        memset(_pSprites, 0, sizeof(Sprite*)*9);
+        for ( int i = 0; i < 9; ++i ){
+            _pSprites[i] = Sprite::createFromFile(file);
+            if ( _pSprites[i] == NULL ){
+                lwerror("Sprite::create failed: file=" <<file);
+                return;
+            }
+            _pSprites[i]->setUV(_uvX[i/3], _uvY[i%3], _uvW[i/3], _uvH[i%3]);
+        }
+        _is2x = _pSprites[0]->is2x();
+        
+		ok = true;
+	}
+	Sprite9::~Sprite9(){
+		for ( int i = 0; i < 9; ++i ){
+            if ( _pSprites[i] )
+                delete _pSprites[i];
+		}
+	}
+	void Sprite9::setPos(float x, float y){
+		_x[0] = x;
+		_y[0] = y;
+		_needUpdate = true;
+	}
+	void Sprite9::setSize(float w, float h){
+		_width = w;
+		_height = h;
+		_needUpdate = true;
+	}
+	void Sprite9::setColor(const lw::Color& color){
+        for ( int i = 0; i < 9; ++i ){
+            _pSprites[i]->setColor(color);
+        }
+	}
+	void Sprite9::update(){
+		float midW = std::max(0.f, _width - _uvW[0] - _uvW[2]);
+		float midH = std::max(0.f, _height - _uvH[0] - _uvH[2]);
+		_x[1] = _x[0] + _uvW[0];
+		_x[2] = _x[1] + midW;
+		_y[1] = _y[0] + _uvH[0];
+		_y[2] = _y[1] + midH;
+        
+		_w[0] = (float)_uvW[0];
+		_w[1] = midW;
+		_w[2] = (float)_uvW[2];
+		_h[0] = (float)_uvH[0];
+		_h[1] = midH;
+		_h[2] = (float)_uvH[2];
+        
+        for ( int i = 0; i < 9; ++i ){
+            _pSprites[i]->setPos(_x[i/3], _y[i%3]);
+            _pSprites[i]->setSize(_w[i/3], _h[i%3]);
+        }
+	}
+	void Sprite9::draw(){
+		if ( _needUpdate ){
+			update();
+			_needUpdate = false;
+		}
+        for ( int i = 0; i < 9; ++i ){
+            _pSprites[i]->draw();
+        }
+	}
+    
+    //===============================================
+    
     void spriteInit(){
         _pvb = new SpriteVertexBuffer();
     }
@@ -388,6 +601,24 @@ namespace lw {
         _pvb->collectVetices(vertices, numVertices, color, blendMode, textureId);
     }
     
+    void addAtlas(const char *file){
+        tinyxml2::XMLDocument doc;
+        doc.LoadFile(_f(file));
+        const tinyxml2::XMLElement *pElem = doc.RootElement();
+        pElem = pElem->FirstChildElement("image");
+        while ( pElem ){
+            const char *name = pElem->Attribute("name");
+            AtlasInfo atlas;
+            atlas.file = pElem->Attribute("file");
+            pElem->QueryIntAttribute("x", &atlas.u);
+            pElem->QueryIntAttribute("y", &atlas.v);
+            pElem->QueryIntAttribute("w", &atlas.w);
+            pElem->QueryIntAttribute("h", &atlas.h);
+            _atlasMap[name] = atlas;
+            
+            pElem = pElem->NextSiblingElement();
+        }
+    }
     
 } //namespace lw
 

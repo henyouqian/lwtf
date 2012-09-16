@@ -39,6 +39,7 @@ namespace lw{
         
     public:
         void addChild(View* pView);
+        void removeChild(View* pView);
     };
     
     void viewDraw();

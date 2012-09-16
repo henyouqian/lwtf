@@ -5,6 +5,7 @@
 #include "lwLog.h"
 #include "lwFileSys.h"
 #include "lwUtil.h"
+#include "lwApp.h"
 #include <map>
 
 namespace lw{
@@ -24,6 +25,7 @@ namespace lw{
 			unsigned short scaleH;
 			unsigned short pages;
 			bool packed;
+            unsigned short size;
 		};
 		struct CharInfo{
 			unsigned int id;
@@ -59,6 +61,7 @@ namespace lw{
         
         int SkipWhiteSpace(std::string &str, int start);
         int FindEndOfToken(std::string &str, int start);
+        void InterpretInfo(std::string &str, int start);
         void InterpretCommon(std::string &str, int start);
         void InterpretChar(std::string &str, int start);
         void InterpretPage(std::string &str, int start);
@@ -131,7 +134,7 @@ namespace lw{
             
             // Interpret line
             if( token == "info" ){
-                //InterpretInfo(line, pos2);
+                InterpretInfo(line, pos2);
             }else if( token == "common" ){
                 InterpretCommon(line, pos2);
             }else if( token == "char" ){
@@ -197,6 +200,29 @@ namespace lw{
             }
         }
         return n;
+    }
+    
+    void FontRes::InterpretInfo(std::string &str, int start){
+        int pos, pos2 = start;
+        while( true ){
+            pos = SkipWhiteSpace(str, pos2);
+            pos2 = FindEndOfToken(str, pos);
+            
+            std::string token = str.substr(pos, pos2-pos);
+            
+            pos = SkipWhiteSpace(str, pos2);
+            if( pos == str.size() || str[pos] != '=' ) break;
+            
+            pos = SkipWhiteSpace(str, pos+1);
+            pos2 = FindEndOfToken(str, pos);
+            
+            std::string value = str.substr(pos, pos2-pos);
+            
+            if( token == "size" )
+                _commonInfo.size = (short)strtol(value.c_str(), 0, 10);
+            
+            if( pos == str.size() ) break;
+        }
     }
     
     void FontRes::InterpretCommon(std::string &str, int start){
@@ -304,7 +330,7 @@ namespace lw{
             
             if( pos == str.size() ) break;
         }
-        lw::Sprite *pSpt = lw::Sprite::create(file.c_str());
+        lw::Sprite *pSpt = lw::Sprite::createFromFile(file.c_str());
         lwassert(pSpt);
         _sprites.push_back(pSpt);
     }
@@ -362,8 +388,22 @@ namespace lw{
     }
     
     LabelBM::LabelBM(const char *fntFile, bool &ok)
-    :_posX(0), _posY(0), _scaleX(1.f), _scaleY(1.f), _rotate(0), _color(255, 255, 255, 255), _align(ALIGN_TOP_LEFT){
-        _pRes = FontRes::create(fntFile);
+    :_posX(0), _posY(0), _scaleX(1.f), _scaleY(1.f), _rotate(0), _color(255, 255, 255, 255), _align(ALIGN_TOP_LEFT), _isHD(false), _pRes(NULL){
+        if ( lw::App::s().getScreenScale() == 2.f ){
+            std::string s = fntFile;
+            int n = s.find('.');
+            std::string ext = &s[n];
+            s.resize(n);
+            s.append("_HD");
+            s.append(ext);
+            _pRes = FontRes::create(s.c_str());
+            if ( _pRes ){
+                _isHD = true;
+            }
+        }
+        if ( !_pRes ){
+            _pRes = FontRes::create(fntFile);
+        }
         if ( !_pRes ){
             return;
         }
@@ -380,6 +420,14 @@ namespace lw{
         if ( _needUpdate ){
 			update();
 		}
+        
+        float scaleX = _scaleX;
+        float scaleY = _scaleY;
+        if ( _isHD ){
+            scaleX *= .5f;
+            scaleY *= .5f;
+        }
+        
 		const wchar_t* text = _text.c_str();
 		size_t len = _text.size();
 		const wchar_t* p = text;
@@ -395,7 +443,7 @@ namespace lw{
 		const std::vector<Sprite*> sprites = _pRes->getSprites();
 		while ( p < text+len ){
 			if ( *p == '\n' ){
-				currY += comInfo.lineHeight*_scaleY;
+				currY += comInfo.lineHeight*scaleY;
 				currX = _posX;
 				if ( currLine < (int)_linesOffset.size() ){
 					currX += _linesOffset[currLine];
@@ -416,10 +464,10 @@ namespace lw{
 				const FontRes::CharInfo& charInfo = it->second;
 				lwassert(charInfo.page < sprites.size());
                 Sprite* pSprite = sprites[charInfo.page];
-				pSprite->setUV(charInfo.x, charInfo.y, charInfo.width, charInfo.height);
+				pSprite->setUV(charInfo.x, charInfo.y, charInfo.width-.5f, charInfo.height-.5f);
 				if ( _rotate == 0 ){
-					pSprite->setPos((float)currX+charInfo.xoffset, (float)currY+charInfo.yoffset*_scaleY);
-					pSprite->setScale(_scaleX, _scaleY);
+					pSprite->setPos(currX+charInfo.xoffset, currY+charInfo.yoffset*scaleY);
+					pSprite->setScale(scaleX, scaleY);
 					pSprite->setColor(_color);
 					pSprite->setRotate(0);
 					pSprite->draw();
@@ -429,12 +477,12 @@ namespace lw{
 					v2[1] = (float)currY+charInfo.yoffset-_posY;
 					v2 = cml::rotate_vector_2D(v2, _rotate);
 					pSprite->setPos(_posX+v2[0], _posY+v2[1]);
-					pSprite->setScale(_scaleX, _scaleY);
+					pSprite->setScale(scaleX, scaleY);
 					pSprite->setRotate(_rotate);
 					pSprite->setColor(_color);
 					pSprite->draw();
 				}
-				currX += charInfo.xadvance*_scaleX;
+				currX += charInfo.xadvance*scaleX;
 			}
 			++p;
 		}
@@ -442,6 +490,13 @@ namespace lw{
     
     void LabelBM::update(){
         _needUpdate = false;
+        
+        float scaleX = _scaleX;
+        float scaleY = _scaleY;
+        if ( _isHD ){
+            scaleX *= .5f;
+            scaleY *= .5f;
+        }
         
 		_width = 0.f;
 		_height = 0.f;
@@ -456,17 +511,17 @@ namespace lw{
 		int alignH = _align % 3;
 		while ( 1 ){
 			if ( *p == '\n' || p == _text.c_str()+len ){
-				x = x*_scaleX;
+				//x = x*scaleX;
 				switch (alignH)
 				{
                     case 0:
                         _linesOffset.push_back(0);
                         break;
                     case 1:
-                        _linesOffset.push_back((-x)*.5f);
+                        _linesOffset.push_back((-x)*.5f*scaleX);
                         break;
                     case 2:
-                        _linesOffset.push_back(-x);
+                        _linesOffset.push_back(-x*scaleX);
                         break;
 				}
 				_width = std::max(_width, x);
@@ -480,7 +535,7 @@ namespace lw{
 				if ( it == charInfoMap.end() ){
 					it = charInfoMap.find(' ');
 					if ( it == charInfoMap.end() ){
-						x += 10.f;
+						x += 10.f*scaleX;
 						++p;
 						continue;
 					}
@@ -490,6 +545,7 @@ namespace lw{
 			}
 			++p;
 		}
+        _height = _height - comInfo.lineHeight + comInfo.size;
 		int alignV = _align / 3;
 		switch (alignV)
 		{
@@ -497,10 +553,10 @@ namespace lw{
                 _y0 = _posY;
                 break;
             case 1:
-                _y0 = _posY-.5f*_height*_scaleY;
+                _y0 = _posY-.5f*_height*scaleY;
                 break;
             case 2:
-                _y0 = _posY-_height*_scaleY;
+                _y0 = _posY-_height*scaleY;
                 break;
 		}
     }
@@ -558,8 +614,8 @@ namespace lw{
     }
     
     void LabelBM::getSize(float &w, float &h){
-        w = _width;
-        h = _height;
+        w = _width*_scaleX;
+        h = _height*_scaleY;
     }
     
 	

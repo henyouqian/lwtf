@@ -166,6 +166,11 @@ namespace lw {
         return _isPaused;
     }
     
+    void Task::switchTo(Task* pTask){
+        stop();
+        pTask->start();
+    }
+    
     Task::State Task::getState(){
         return _state;
     }

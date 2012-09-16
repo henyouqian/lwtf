@@ -20,6 +20,7 @@ namespace lw {
         int getPriority();
         bool isVisible();
         bool isPaused();
+        void switchTo(Task* pTask);
         
         enum State{
             IDLE,
