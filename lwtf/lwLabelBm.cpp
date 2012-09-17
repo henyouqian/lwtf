@@ -436,7 +436,7 @@ namespace lw{
 		const std::vector<Sprite*> sprites = _pRes->getSprites();
 		while ( p < text+len ){
 			if ( *p == '\n' ){
-				currY += comInfo.lineHeight*_scaleX;
+				currY += comInfo.lineHeight*_scaleY;
 				currX = _posX;
 				if ( currLine < (int)_linesOffset.size() ){
 					currX += _linesOffset[currLine];
@@ -457,17 +457,17 @@ namespace lw{
 				const FontRes::CharInfo& charInfo = it->second;
 				lwassert(charInfo.page < sprites.size());
                 Sprite* pSprite = sprites[charInfo.page];
-                pSprite->setUV(charInfo.x, charInfo.y, charInfo.width-.5f, charInfo.height-.5f);
+                pSprite->setUV(charInfo.x, charInfo.y, charInfo.width-1.f, charInfo.height-1.f);
 				if ( _rotate == 0 ){
-					pSprite->setPos(currX+charInfo.xoffset, currY+charInfo.yoffset*_scaleY);
+					pSprite->setPos(currX+charInfo.xoffset*_scaleX, currY+charInfo.yoffset*_scaleY);
 					pSprite->setScale(_scaleX, _scaleY);
 					pSprite->setColor(_color);
 					pSprite->setRotate(0);
 					pSprite->draw();
 				}else{
 					cml::Vector2 v2;
-					v2[0] = (float)currX+charInfo.xoffset-_posX;
-					v2[1] = (float)currY+charInfo.yoffset-_posY;
+					v2[0] = (float)currX+charInfo.xoffset*_scaleX-_posX;
+					v2[1] = (float)currY+charInfo.yoffset*_scaleY-_posY;
 					v2 = cml::rotate_vector_2D(v2, _rotate);
 					pSprite->setPos(_posX+v2[0], _posY+v2[1]);
 					pSprite->setScale(_scaleX, _scaleY);
