@@ -12,30 +12,30 @@ namespace lw{
 
     class FontRes: public Res{
 	public:
-		static FontRes* create(const char* fntFile);
+		static FontRes* create(const char* fntFile, bool is2x);
 		
 		const char* getFileName(){
 			return _fileName.c_str();
 		}
         
 		struct CommonInfo{
-			unsigned short lineHeight;
-			unsigned short base;
-			unsigned short scaleW;
-			unsigned short scaleH;
+			float lineHeight;
+			float base;
+			float scaleW;
+			float scaleH;
 			unsigned short pages;
 			bool packed;
-            unsigned short size;
+            float size;
 		};
 		struct CharInfo{
 			unsigned int id;
-			unsigned short x;
-			unsigned short y;
-			unsigned short width;
-			unsigned short height;
-			short xoffset;
-			short yoffset;
-			short xadvance;
+			float x;
+			float y;
+			float width;
+			float height;
+			float xoffset;
+			float yoffset;
+			float xadvance;
 			unsigned char page;
 			unsigned char chnl;
             int kerningIdx;
@@ -43,7 +43,7 @@ namespace lw{
         struct KerningInfo{
             int first;
             int second;
-            int amount;
+            float amount;
         };
 		const std::map<wchar_t, CharInfo>& getCharInfoMap(){
 			return _charInfoMap;
@@ -56,7 +56,7 @@ namespace lw{
 		}
         
 	private:
-		FontRes(const char* fileName, bool& ok);
+		FontRes(const char* fileName, bool is2x, bool& ok);
 		~FontRes();
         
         int SkipWhiteSpace(std::string &str, int start);
@@ -70,7 +70,7 @@ namespace lw{
         
 		std::string _fileName;
 		CommonInfo _commonInfo;
-		
+		bool _is2x;
 		std::map<wchar_t, CharInfo> _charInfoMap;
 		std::vector<Sprite*> _sprites;
         std::vector<KerningInfo> _kernings;
@@ -80,11 +80,11 @@ namespace lw{
         std::map<std::string, FontRes*> _resMap;
     }
     
-    FontRes* FontRes::create(const char* fntFile){
+    FontRes* FontRes::create(const char* fntFile, bool is2x){
         std::map<std::string, FontRes*>::iterator it = _resMap.find(fntFile);
         if ( it == _resMap.end() ){
             bool ok = false;
-            FontRes* p = new FontRes(fntFile, ok);
+            FontRes* p = new FontRes(fntFile, is2x, ok);
             if ( p && ok ){
                 return p;
             }else if ( p ){
@@ -97,8 +97,9 @@ namespace lw{
         }
     }
     
-    FontRes::FontRes(const char* fntFile, bool& ok){
+    FontRes::FontRes(const char* fntFile, bool is2x, bool& ok){
         _fileName = fntFile;
+        _is2x = is2x;
         
 		FILE* f = fopen(_f(fntFile), "rt");
 		if ( f == NULL ){
@@ -221,6 +222,10 @@ namespace lw{
             if( token == "size" )
                 _commonInfo.size = (short)strtol(value.c_str(), 0, 10);
             
+            if ( _is2x ){
+                _commonInfo.size *= .5f;
+            }
+            
             if( pos == str.size() ) break;
         }
     }
@@ -255,7 +260,15 @@ namespace lw{
             else if( token == "packed" )
                 _commonInfo.packed = strtol(value.c_str(), 0, 10);
             
+            
             if( pos == str.size() ) break;
+        }
+        
+        if ( _is2x ){
+            _commonInfo.lineHeight *= .5f;
+            _commonInfo.base *= .5f;
+            _commonInfo.scaleW *= .5f;
+            _commonInfo.scaleH *= .5f;
         }
     }
     
@@ -299,6 +312,15 @@ namespace lw{
                 info.chnl = strtol(value.c_str(), 0, 10);
             
             if( pos == str.size() ) break;
+        }
+        if ( _is2x ){
+            info.x *= .5f;
+            info.y *= .5f;
+            info.width *= .5f;
+            info.height *= .5f;
+            info.xoffset *= .5f;
+            info.yoffset *= .5f;
+            info.xadvance *= .5f;
         }
         _charInfoMap[info.id] = info;
     }
@@ -363,6 +385,9 @@ namespace lw{
             
             if( pos == str.size() ) break;
         }
+        if ( _is2x ){
+            info.amount *= .5f;
+        }
         _kernings.push_back(info);
     }
     
@@ -394,15 +419,15 @@ namespace lw{
             int n = s.find('.');
             std::string ext = &s[n];
             s.resize(n);
-            s.append("_HD");
+            s.append("_2x");
             s.append(ext);
-            _pRes = FontRes::create(s.c_str());
+            _pRes = FontRes::create(s.c_str(), true);
             if ( _pRes ){
                 _isHD = true;
             }
         }
         if ( !_pRes ){
-            _pRes = FontRes::create(fntFile);
+            _pRes = FontRes::create(fntFile, false);
         }
         if ( !_pRes ){
             return;
@@ -421,13 +446,6 @@ namespace lw{
 			update();
 		}
         
-        float scaleX = _scaleX;
-        float scaleY = _scaleY;
-        if ( _isHD ){
-            scaleX *= .5f;
-            scaleY *= .5f;
-        }
-        
 		const wchar_t* text = _text.c_str();
 		size_t len = _text.size();
 		const wchar_t* p = text;
@@ -443,7 +461,7 @@ namespace lw{
 		const std::vector<Sprite*> sprites = _pRes->getSprites();
 		while ( p < text+len ){
 			if ( *p == '\n' ){
-				currY += comInfo.lineHeight*scaleY;
+				currY += comInfo.lineHeight*_scaleX;
 				currX = _posX;
 				if ( currLine < (int)_linesOffset.size() ){
 					currX += _linesOffset[currLine];
@@ -464,10 +482,10 @@ namespace lw{
 				const FontRes::CharInfo& charInfo = it->second;
 				lwassert(charInfo.page < sprites.size());
                 Sprite* pSprite = sprites[charInfo.page];
-				pSprite->setUV(charInfo.x, charInfo.y, charInfo.width-.5f, charInfo.height-.5f);
+                pSprite->setUV(charInfo.x, charInfo.y, charInfo.width-.5f, charInfo.height-.5f);
 				if ( _rotate == 0 ){
-					pSprite->setPos(currX+charInfo.xoffset, currY+charInfo.yoffset*scaleY);
-					pSprite->setScale(scaleX, scaleY);
+					pSprite->setPos(currX+charInfo.xoffset, currY+charInfo.yoffset*_scaleY);
+					pSprite->setScale(_scaleX, _scaleY);
 					pSprite->setColor(_color);
 					pSprite->setRotate(0);
 					pSprite->draw();
@@ -477,12 +495,12 @@ namespace lw{
 					v2[1] = (float)currY+charInfo.yoffset-_posY;
 					v2 = cml::rotate_vector_2D(v2, _rotate);
 					pSprite->setPos(_posX+v2[0], _posY+v2[1]);
-					pSprite->setScale(scaleX, scaleY);
+					pSprite->setScale(_scaleX, _scaleY);
 					pSprite->setRotate(_rotate);
 					pSprite->setColor(_color);
 					pSprite->draw();
 				}
-				currX += charInfo.xadvance*scaleX;
+				currX += charInfo.xadvance*_scaleX;
 			}
 			++p;
 		}
@@ -490,13 +508,6 @@ namespace lw{
     
     void LabelBM::update(){
         _needUpdate = false;
-        
-        float scaleX = _scaleX;
-        float scaleY = _scaleY;
-        if ( _isHD ){
-            scaleX *= .5f;
-            scaleY *= .5f;
-        }
         
 		_width = 0.f;
 		_height = 0.f;
@@ -518,10 +529,10 @@ namespace lw{
                         _linesOffset.push_back(0);
                         break;
                     case 1:
-                        _linesOffset.push_back((-x)*.5f*scaleX);
+                        _linesOffset.push_back((-x)*.5f*_scaleX);
                         break;
                     case 2:
-                        _linesOffset.push_back(-x*scaleX);
+                        _linesOffset.push_back(-x*_scaleX);
                         break;
 				}
 				_width = std::max(_width, x);
@@ -535,7 +546,7 @@ namespace lw{
 				if ( it == charInfoMap.end() ){
 					it = charInfoMap.find(' ');
 					if ( it == charInfoMap.end() ){
-						x += 10.f*scaleX;
+						x += 10.f*_scaleX;
 						++p;
 						continue;
 					}
@@ -553,10 +564,10 @@ namespace lw{
                 _y0 = _posY;
                 break;
             case 1:
-                _y0 = _posY-.5f*_height*scaleY;
+                _y0 = _posY-.5f*_height*_scaleY;
                 break;
             case 2:
-                _y0 = _posY-_height*scaleY;
+                _y0 = _posY-_height*_scaleY;
                 break;
 		}
     }

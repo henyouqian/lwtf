@@ -34,10 +34,12 @@ namespace lw{
         static Button* create(ButtonDef& def);
         static Button* create(ButtonCallback* pCallback, View* pParent, const char *file, int uUp, int vUp, int uDown, int vDown, int uDisable, int vDisable, int w, int h);
         ~Button();
+        static Button* create(ButtonCallback* pCallback, View* pParent, const char *atlasUp, const char *atlasDown, const char *atlasDisable);
         void setExt(int top, int bottom, int left, int right);
         
     private:
         Button(ButtonCallback* pCallback, View* pParent, const char *file, int uUp, int vUp, int uDown, int vDown, int uDisable, int vDisable, int w, int h, bool &ok);
+        Button(ButtonCallback* pCallback, View* pParent, const char *atlasUp, const char *atlasDown, const char *atlasDisable, bool &ok);
         virtual bool vEvent(const lw::TouchEvent& evt);
         virtual void vDraw();
         virtual void vUpdatePos();

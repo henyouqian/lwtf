@@ -59,8 +59,8 @@ namespace lw{
         bool _is2x;
         
         Sprite(const char *file, bool fromAtlas, bool &ok);
-        void loadFromFile(const char *file, bool is2x);
-        void loadFromAtlas(const char *key, bool is2x);
+        void loadFromFile(const char *file);
+        void loadFromAtlas(const char *key);
         void update();
     };
     

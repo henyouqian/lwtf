@@ -26,6 +26,17 @@ namespace lw{
         return NULL;
     }
     
+    Button* Button::create(ButtonCallback* pCallback, View* pParent, const char *atlasUp, const char *atlasDown, const char *atlasDisable){
+        bool ok = false;
+        Button *p = new Button(pCallback, pParent, atlasUp, atlasDown, atlasDisable, ok);
+        if ( p && ok ){
+            return p;
+        }else if ( p ){
+            delete p;
+        }
+        return NULL;
+    }
+    
     Button::Button(ButtonCallback* pCallback, View* pParent, const char *file, int uUp, int vUp, int uDown, int vDown, int uDisable, int vDisable, int w, int h, bool &ok)
     :View(pParent), _pCallback(pCallback), _pEvt(NULL), _down(false), _tracing(false)
     ,_extTop(0),_extBottom(0),_extLeft(0),_extRight(0){
@@ -38,6 +49,20 @@ namespace lw{
             _pSptUp->setUV((float)uUp, (float)vUp, (float)w, (float)h);
             _pSptDown->setUV((float)uDown, (float)vDown, (float)w, (float)h);
             _pSptDisable->setUV((float)uDisable, (float)vDisable, (float)w, (float)h);
+            ok = true;
+        }else{
+            ok = false;
+        }
+    }
+    
+    Button::Button(ButtonCallback* pCallback, View* pParent, const char *atlasUp, const char *atlasDown, const char *atlasDisable, bool &ok)
+    :View(pParent), _pCallback(pCallback), _pEvt(NULL), _down(false), _tracing(false)
+    ,_extTop(0),_extBottom(0),_extLeft(0),_extRight(0){
+        _pSptUp = Sprite::createFromAtlas(atlasUp);
+        _pSptDown = Sprite::createFromAtlas(atlasDown);
+        _pSptDisable = Sprite::createFromAtlas(atlasDisable);
+        if ( _pSptUp && _pSptDown && _pSptDisable ){
+            _pSptUp->getSize(_w, _h);
             ok = true;
         }else{
             ok = false;

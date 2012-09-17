@@ -181,22 +181,32 @@ namespace lw {
         _pTextureRes = NULL;
         
         _is2x = false;
+        bool already2x = false;
+        std::string sfile = file;
+        int pos = sfile.find("_2x.");
+        if ( pos != std::string::npos ){
+            already2x = true;
+        }
+        
         if ( lw::App::s().getScreenScale() == 2.f ){
+            _is2x = true;
+            if ( !already2x ){
+                makeFileName2x(sfile);
+            }
             if ( fromAtlas ){
-                loadFromAtlas(file, true);
+                loadFromAtlas(sfile.c_str());
             }else{
-                std::string file2x = file;
-                makeFileName2x(file2x);
-                loadFromFile(file2x.c_str(), true);
+                loadFromFile(sfile.c_str());
             }
         }
-        if ( _pTextureRes ){
-            _is2x = true;
-        }else{
-            if ( fromAtlas ){
-                loadFromAtlas(file, false);
-            }else{
-                loadFromFile(file, false);
+        if ( !_pTextureRes ){
+            _is2x = false;
+            if ( !already2x ){
+                if ( fromAtlas ){
+                    loadFromAtlas(file);
+                }else{
+                    loadFromFile(file);
+                }
             }
         }
         
@@ -211,25 +221,19 @@ namespace lw {
 		}
     }
     
-    void Sprite::loadFromFile(const char *file, bool is2x){
+    void Sprite::loadFromFile(const char *file){
         _pTextureRes = TextureRes::create(file);
         if ( _pTextureRes ){
-            _is2x = is2x;
             uvInit();
         }
     }
     
-    void Sprite::loadFromAtlas(const char *key, bool is2x){
+    void Sprite::loadFromAtlas(const char *key){
         std::map<std::string, AtlasInfo>::iterator it = _atlasMap.find(key);
         if ( it != _atlasMap.end() ){
             AtlasInfo& atlas = it->second;
-            std::string filename = atlas.file;
-            if ( is2x ){
-                makeFileName2x(filename);
-            }
-            _pTextureRes = TextureRes::create(filename.c_str());
+            _pTextureRes = TextureRes::create(key);
             if ( _pTextureRes ){
-                _is2x = is2x; 
                 setUV(atlas.u, atlas.v, atlas.w, atlas.h);
             }
         }
