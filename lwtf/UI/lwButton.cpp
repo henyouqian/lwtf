@@ -7,12 +7,34 @@
 
 namespace lw{
     
-    ButtonDef::ButtonDef(ButtonCallback* callback_, View* parent_, const char* file_, int uUp_, int vUp_, int uDown_, int vDown_, int uDisable_, int vDisable_, int w_, int h_):callback(callback_), parent(parent_), file(file_), uUp(uUp_), vUp(vUp_), uDown(uDown_), vDown(vDown_), uDisable(uDisable_), vDisable(vDisable_), w(w_), h(h_){
-        
+    ButtonDefUV::ButtonDefUV(ButtonCallback* callback_, View* parent_, const char* file_, int uUp_, int vUp_, int uDown_, int vDown_, int uDisable_, int vDisable_, int w_, int h_){
+        callback = callback_;
+        parent = parent_;
+        file = file_;
+        uUp = uUp_;
+        vUp = vUp_;
+        uDown = uDown_;
+        vDown = vDown_;
+        uDisable = uDisable_;
+        vDisable = vDisable_;
+        w = w_;
+        h = h_;
     }
     
-    Button* Button::create(ButtonDef& def){
+    ButtonDefAtlas::ButtonDefAtlas(ButtonCallback* callback_, View* parent_, const char *atlasUp_, const char *atlasDown_, const char *atlasDisable_){
+        callback = callback_;
+        parent = parent_;
+        atlasUp = atlasUp_;
+        atlasDown = atlasDown_;
+        atlasDisable = atlasDisable_;
+    }
+    
+    Button* Button::create(ButtonDefUV& def){
         return create(def.callback, def.parent, def.file, def.uUp, def.vUp, def.uDown, def.vDown, def.uDisable, def.vDisable, def.w, def.h);
+    }
+    
+    Button* Button::create(ButtonDefAtlas& def){
+        return create(def.callback, def.parent, def.atlasUp, def.atlasDown, def.atlasDisable);
     }
 
     Button* Button::create(ButtonCallback* pCallback, View* pParent, const char *file, int uUp, int vUp, int uDown, int vDown, int uDisable, int vDisable, int w, int h){
@@ -153,7 +175,50 @@ namespace lw{
     
     
     //======================================================
+    Button9DefUV::Button9DefUV(ButtonCallback* callback_, View* parent_, const char *file_, int uUp_, int vUp_, int uDown_, int vDown_, int uDisable_, int vDisable_, int w1_, int w2_, int w3_, int h1_, int h2_, int h3_, const char* font_){
+        callback = callback_;
+        parent = parent_;
+        file = file_;
+        uUp = uUp_;
+        vUp = vUp_;
+        uDown = uDown_;
+        vDown = vDown_;
+        uDisable = uDisable_;
+        vDisable = vDisable_;
+        w1 = w1_;
+        w2 = w2_;
+        w3 = w3_;
+        h1 = h1_;
+        h2 = h2_;
+        h3 = h3_;
+        font = font_;
+    }
+    
+    Button9DefAtlas::Button9DefAtlas(ButtonCallback* callback_, View* parent_, const char *atlasUp_, const char *atlasDown_, const char *atlasDisable_, int w1_, int w2_, int w3_, int h1_, int h2_, int h3_, const char* font_){
+        callback = callback_;
+        parent = parent_;
+        atlasUp = atlasUp_;
+        atlasDown = atlasDown_;
+        atlasDisable = atlasDisable_;
+        w1 = w1_;
+        w2 = w2_;
+        w3 = w3_;
+        h1 = h1_;
+        h2 = h2_;
+        h3 = h3_;
+        font = font_;
+    }
+    
+    Button9* Button9::create(Button9DefUV& def){
+        return create(def.callback, def.parent, def.file, def.uUp, def.vUp, def.uDown, def.vDown, def.uDisable, def.vDisable, def.w1, def.w2, def.w3, def.h1, def.h2, def.h3, def.font);
+    }
+    
+    Button9* Button9::create(Button9DefAtlas& def){
+        return create(def.callback, def.parent, def.atlasUp, def.atlasDown, def.atlasDisable, def.w1, def.w2, def.w3, def.h1, def.h2, def.h3, def.font);
+    }
+    
     Button9* Button9::create(ButtonCallback* pCallback, View* pParent, const char *file, int uUp, int vUp, int uDown, int vDown, int uDisable, int vDisable, int w1, int w2, int w3, int h1, int h2, int h3, const char* font){
+        
         bool ok = false;
         Button9 *p = new Button9(pCallback, pParent, file, uUp, vUp, uDown, vDown, uDisable, vDisable, w1, w2, w3, h1, h2, h3, font, ok);
         if ( p && ok ){
@@ -164,12 +229,48 @@ namespace lw{
         return NULL;
     }
     
+    Button9* Button9::create(ButtonCallback* pCallback, View* pParent, const char *atlasUp, const char *atlasDown, const char *atlasDisable, int w1, int w2, int w3, int h1, int h2, int h3, const char* font){
+        
+        bool ok = false;
+        Button9 *p = new Button9(pCallback, pParent, atlasUp, atlasDown, atlasDisable, w1, w2, w3, h1, h2, h3, font, ok);
+        if ( p && ok ){
+            return p;
+        }else if ( p ){
+            delete p;
+        }
+        return NULL; 
+    }
+    
     Button9::Button9(ButtonCallback* pCallback, View* pParent, const char* file, int uUp, int vUp, int uDown, int vDown, int uDisable, int vDisable, int w1, int w2, int w3, int h1, int h2, int h3, const char* font, bool &ok)
     :View(pParent), _pCallback(pCallback), _pEvt(NULL), _down(false), _tracing(false)
     ,_extTop(0),_extBottom(0),_extLeft(0),_extRight(0){
         _pSptUp = Sprite9::create(file, uUp, vUp, w1, w2, w3, h1, h2, h3);
         _pSptDown = Sprite9::create(file, uDown, vDown, w1, w2, w3, h1, h2, h3);
         _pSptDisable = Sprite9::create(file, uDisable, vDisable, w1, w2, w3, h1, h2, h3);
+        if ( _pSptUp == NULL || _pSptDown == NULL || _pSptDisable == NULL ){
+            lwerror("sprite create error");
+            return;
+        }
+        if ( font ){
+            _pLabel = lw::LabelBM::create(font);
+            if ( !_pLabel ){
+                lwerror("label create error");
+                return;
+            }
+            _pLabel->setAlign(lw::ALIGN_MID_MID);
+        }
+        
+        _w = w1+w2+w3;
+        _h = h1+h2+h3;
+        ok = true;
+    }
+    
+    Button9::Button9(ButtonCallback* pCallback, View* pParent, const char *atlasUp, const char *atlasDown, const char *atlasDisable, int w1, int w2, int w3, int h1, int h2, int h3, const char* font, bool &ok)
+    :View(pParent), _pCallback(pCallback), _pEvt(NULL), _down(false), _tracing(false)
+    ,_extTop(0),_extBottom(0),_extLeft(0),_extRight(0){
+        _pSptUp = Sprite9::create(atlasUp, w1, w2, w3, h1, h2, h3);
+        _pSptDown = Sprite9::create(atlasDown, w1, w2, w3, h1, h2, h3);
+        _pSptDisable = Sprite9::create(atlasDisable, w1, w2, w3, h1, h2, h3);
         if ( _pSptUp == NULL || _pSptDown == NULL || _pSptDisable == NULL ){
             lwerror("sprite create error");
             return;

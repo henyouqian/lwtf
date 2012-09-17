@@ -4,6 +4,7 @@
 #include "lwtf/lwColor.h"
 #include "cml/cml.h"
 #include <OpenGLES/ES2/gl.h>
+#include "lwtf/lwApp.h"
 
 namespace lw{
     
@@ -56,7 +57,6 @@ namespace lw{
         cml::Vector2 _vertexPos[4];
         bool _needUpdate;
         BlendMode _blendMode;
-        bool _is2x;
         
         Sprite(const char *file, bool fromAtlas, bool &ok);
         void loadFromFile(const char *file);
@@ -67,6 +67,7 @@ namespace lw{
     class Sprite9{
 	public:
 		static Sprite9* create(const char* file, int u, int v, int w1, int w2, int w3, int h1, int h2, int h3);
+        static Sprite9* create(const char* atlasKey, int w1, int w2, int w3, int h1, int h2, int h3);
 		~Sprite9();
 		void setPos(float x, float y);
 		void setSize(float w, float h);
@@ -75,13 +76,13 @@ namespace lw{
 		
 	private:
 		Sprite9(const char* fileName, int u, int v, int w1, int w2, int w3, int h1, int h2, int h3, bool& ok);
+        Sprite9(const char* atlasKey, int w1, int w2, int w3, int h1, int h2, int h3, bool& ok);
         void update();
 		Sprite* _pSprites[9];
 		float _uvX[3], _uvY[3], _uvW[3], _uvH[3];
 		float _x[3], _y[3], _w[3], _h[3];
 		float _width, _height;
 		bool _needUpdate;
-        bool _is2x;
 	}; 
     
     void spriteInit();

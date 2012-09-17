@@ -23,5 +23,20 @@ namespace lw {
     
 } //namespace lw
 
+template<typename T> T _as(const T& v){ //auto scale
+    return v*lw::App::s().getScreenScale();
+}
+
+class _af   //auto file name
+{
+public:
+	_af(const char* fileName);
+	~_af();
+	operator const char*();
+    
+private:
+    std::string _s;
+};
+
 
 #endif //__LW_APP_H__

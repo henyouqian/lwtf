@@ -4,8 +4,38 @@
 #include "lwTouchEvent.h"
 
 namespace lw{
+    
+    CheckboxDefUV::CheckboxDefUV(CheckboxCallback* callback_, View* parent_, const char* file_, int uUp_, int vUp_, int uDown_, int vDown_, int uDisable_, int vDisable_, int w_, int h_){
+        callback = callback_;
+        parent = parent_;
+        file = file_;
+        uUp = uUp_;
+        vUp = vUp_;
+        uDown = uDown_;
+        vDown = vDown_;
+        uDisable = uDisable_;
+        vDisable = vDisable_;
+        w = w_;
+        h = h_;
+    }
+    
+    CheckboxDefAtlas::CheckboxDefAtlas(CheckboxCallback* callback_, View* parent_, const char *atlasUp_, const char *atlasDown_, const char *atlasDisable_){
+        callback = callback_;
+        parent = parent_;
+        atlasUp = atlasUp_;
+        atlasDown = atlasDown_;
+        atlasDisable = atlasDisable_;
+    }
+    
+    Checkbox* Checkbox::create(CheckboxDefUV& def){
+        return create(def.callback, def.parent, def.file, def.uUp, def.vUp, def.uDown, def.vDown, def.uDisable, def.vDisable, def.w, def.h);
+    }
+    
+    Checkbox* Checkbox::create(CheckboxDefAtlas& def){
+        return create(def.callback, def.parent, def.atlasUp, def.atlasDown, def.atlasDisable);
+    }
 
-    Checkbox* Checkbox::create(CheckboxCallback* pCallback, View* pParent, const char *file, int w, int h, int uUp, int vUp, int uDown, int vDown, int uDisable, int vDisable){
+    Checkbox* Checkbox::create(CheckboxCallback* pCallback, View* pParent, const char *file, int uUp, int vUp, int uDown, int vDown, int uDisable, int vDisable, int w, int h){
         bool ok = false;
         Checkbox *p = new Checkbox(pCallback, pParent, file, w, h, uUp, vUp, uDown, vDown, uDisable, vDisable, ok);
         if ( p && ok ){
@@ -16,24 +46,43 @@ namespace lw{
         return NULL;
     }
     
-    Checkbox::Checkbox(CheckboxCallback* pCallback, View* pParent, const char *file, int w, int h, int uUp, int vUp, int uDown, int vDown, int uDisable, int vDisable, bool &ok)
+    Checkbox* Checkbox::create(CheckboxCallback* pCallback, View* pParent, const char *atlasUp, const char *atlasDown, const char *atlasDisable){
+        bool ok = false;
+        Checkbox *p = new Checkbox(pCallback, pParent, atlasUp, atlasDown, atlasDisable, ok);
+        if ( p && ok ){
+            return p;
+        }else if ( p ){
+            delete p;
+        }
+        return NULL;
+    }
+    
+    Checkbox::Checkbox(CheckboxCallback* pCallback, View* pParent, const char *file, int uUp, int vUp, int uDown, int vDown, int uDisable, int vDisable, int w, int h, bool &ok)
     :View(pParent), _pCallback(pCallback), _pEvt(NULL), _check(false)
     ,_extTop(0),_extBottom(0),_extLeft(0),_extRight(0){
         _pSptUp = Sprite::createFromFile(file);
         _pSptDown = Sprite::createFromFile(file);
-        if ( vDisable >= 0 && uDisable >= 0 ){
-            _pSptDisable = Sprite::createFromFile(file);
-        }else{
-            _pSptDisable = NULL;
-        }
-        if ( _pSptUp && _pSptDown ){
+        _pSptDisable = Sprite::createFromFile(file);
+        if ( _pSptUp && _pSptDown && _pSptDisable ){
             _w = w;
             _h = h;
             _pSptUp->setUV((float)uUp, (float)vUp, (float)w, (float)h);
             _pSptDown->setUV((float)uDown, (float)vDown, (float)w, (float)h);
-            if ( _pSptDisable ){
-                _pSptDisable->setUV((float)uDisable, (float)vDisable, (float)w, (float)h);
-            }
+            _pSptDisable->setUV((float)uDisable, (float)vDisable, (float)w, (float)h);
+        }else{
+            ok = false;
+        }
+        ok = true;
+    }
+    
+    Checkbox::Checkbox(CheckboxCallback* pCallback, View* pParent, const char *atlasUp, const char *atlasDown, const char *atlasDisable, bool &ok)
+    :View(pParent), _pCallback(pCallback), _pEvt(NULL), _check(false)
+    ,_extTop(0),_extBottom(0),_extLeft(0),_extRight(0){
+        _pSptUp = Sprite::createFromAtlas(atlasUp);
+        _pSptDown = Sprite::createFromAtlas(atlasDown);
+        _pSptDisable = Sprite::createFromAtlas(atlasDisable);
+        if ( _pSptUp && _pSptDown && _pSptDisable ){
+            _pSptUp->getSize(_w, _h);
         }else{
             ok = false;
         }

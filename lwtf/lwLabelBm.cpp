@@ -70,7 +70,6 @@ namespace lw{
         
 		std::string _fileName;
 		CommonInfo _commonInfo;
-		bool _is2x;
 		std::map<wchar_t, CharInfo> _charInfoMap;
 		std::vector<Sprite*> _sprites;
         std::vector<KerningInfo> _kernings;
@@ -99,7 +98,6 @@ namespace lw{
     
     FontRes::FontRes(const char* fntFile, bool is2x, bool& ok){
         _fileName = fntFile;
-        _is2x = is2x;
         
 		FILE* f = fopen(_f(fntFile), "rt");
 		if ( f == NULL ){
@@ -222,10 +220,6 @@ namespace lw{
             if( token == "size" )
                 _commonInfo.size = (short)strtol(value.c_str(), 0, 10);
             
-            if ( _is2x ){
-                _commonInfo.size *= .5f;
-            }
-            
             if( pos == str.size() ) break;
         }
     }
@@ -262,13 +256,6 @@ namespace lw{
             
             
             if( pos == str.size() ) break;
-        }
-        
-        if ( _is2x ){
-            _commonInfo.lineHeight *= .5f;
-            _commonInfo.base *= .5f;
-            _commonInfo.scaleW *= .5f;
-            _commonInfo.scaleH *= .5f;
         }
     }
     
@@ -312,15 +299,6 @@ namespace lw{
                 info.chnl = strtol(value.c_str(), 0, 10);
             
             if( pos == str.size() ) break;
-        }
-        if ( _is2x ){
-            info.x *= .5f;
-            info.y *= .5f;
-            info.width *= .5f;
-            info.height *= .5f;
-            info.xoffset *= .5f;
-            info.yoffset *= .5f;
-            info.xadvance *= .5f;
         }
         _charInfoMap[info.id] = info;
     }
@@ -384,9 +362,6 @@ namespace lw{
                 info.amount = strtol(value.c_str(), 0, 10);
             
             if( pos == str.size() ) break;
-        }
-        if ( _is2x ){
-            info.amount *= .5f;
         }
         _kernings.push_back(info);
     }

@@ -2,6 +2,7 @@
 #include "lwTouchEvent.h"
 #include "lwTask.h"
 #include "lwView.h"
+#include "lwApp.h"
 
 namespace lw{
     
@@ -71,7 +72,7 @@ namespace lw{
     }
 
     void onTouchEvent(TouchEvent::Type type, short x, short y, short prx, short pry){
-        _mgr.onTouchEvent(type, x, y, prx, pry);
+        _mgr.onTouchEvent(type, _as(x), _as(y), _as(prx), _as(pry));
     }
     
     void cancelAllTouchEvent(){

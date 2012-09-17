@@ -86,6 +86,9 @@ namespace lw {
         cml::Matrix4 m;
 		float w, h;
         App::s().getViewSize(w, h);
+        float screenScale = App::s().getScreenScale();
+        w *= screenScale;
+        h *= screenScale;
 		cml::matrix_orthographic_RH(m, 0.f, w, -h, 0.f, -1000.f, 1000.f, cml::z_clip_neg_one);
         glUniformMatrix4fv(_mvpMatLocation, 1, false, m.data());
         glUniform4f(_colorLocation, _currColor.r/255.f, _currColor.g/255.f, _currColor.b/255.f, _currColor.a/255.f);
@@ -180,34 +183,10 @@ namespace lw {
         _needUpdate = true;
         _pTextureRes = NULL;
         
-        _is2x = false;
-        bool already2x = false;
-        std::string sfile = file;
-        int pos = sfile.find("_2x.");
-        if ( pos != std::string::npos ){
-            already2x = true;
-        }
-        
-        if ( lw::App::s().getScreenScale() == 2.f ){
-            _is2x = true;
-            if ( !already2x ){
-                makeFileName2x(sfile);
-            }
-            if ( fromAtlas ){
-                loadFromAtlas(sfile.c_str());
-            }else{
-                loadFromFile(sfile.c_str());
-            }
-        }
-        if ( !_pTextureRes ){
-            _is2x = false;
-            if ( !already2x ){
-                if ( fromAtlas ){
-                    loadFromAtlas(file);
-                }else{
-                    loadFromFile(file);
-                }
-            }
+        if ( fromAtlas ){
+            loadFromAtlas(file);
+        }else{
+            loadFromFile(file);
         }
         
         if ( _pTextureRes ){
@@ -232,7 +211,7 @@ namespace lw {
         std::map<std::string, AtlasInfo>::iterator it = _atlasMap.find(key);
         if ( it != _atlasMap.end() ){
             AtlasInfo& atlas = it->second;
-            _pTextureRes = TextureRes::create(key);
+            _pTextureRes = TextureRes::create(atlas.file.c_str());
             if ( _pTextureRes ){
                 setUV(atlas.u, atlas.v, atlas.w, atlas.h);
             }
@@ -242,11 +221,6 @@ namespace lw {
     void Sprite::setUV(float u, float v, float w, float h){
         float texW = (float)_pTextureRes->getWidth();
         float texH = (float)_pTextureRes->getHeight();
-        
-        if ( _is2x ){
-            texW *= .5f;
-            texH *= .5f;
-        }
         
         _u = u;
         _v = v;
@@ -263,10 +237,6 @@ namespace lw {
         _u = _v = 0.f;
         _w = (float)_pTextureRes->getWidth();
         _h = (float)_pTextureRes->getHeight();
-        if ( _is2x ){
-            _w *= .5f;
-            _h *= .5f;
-        }
         _u1 = _v1 = 0.f;
         _u2 = _v2 = 1.f;
     }
@@ -348,10 +318,6 @@ namespace lw {
 		}
         float scaleX = _scaleX;
         float scaleY = _scaleY;
-        if ( _is2x ){
-            scaleX *= .5f;
-            scaleY *= .5f;
-        }
 		if ( scaleX != 1.f || scaleY != 1.f ){
             cml::matrix_scale_2D(m1, scaleX, scaleY);
 			m *= m1;
@@ -442,14 +408,8 @@ namespace lw {
 			cml::matrix_rotation_2D(m1, _rotate);
 			m *= m1;
 		}
-        float scaleX = _scaleX;
-        float scaleY = _scaleY;
-//        if ( _is2x ){
-//            scaleX *= .5f;
-//            scaleY *= .5f;
-//        }
-		if ( scaleX != 1.f || scaleY != 1.f ){
-            cml::matrix_scale_2D(m1, scaleX, scaleY);
+		if ( _scaleX != 1.f || _scaleY != 1.f ){
+            cml::matrix_scale_2D(m1, _scaleX, _scaleY);
 			m *= m1;
 		}
         
@@ -480,15 +440,11 @@ namespace lw {
 		_vertexPos[3][1] = -p4[1];
     }
     
-    bool Sprite::is2x(){
-        return _is2x;
-    }
-    
     //===============================================
-    Sprite9* Sprite9::create(const char* file, int uvX, int uvY, int uvW1, int uvW2, int uvW3, int uvH1, int uvH2, int uvH3){
+    Sprite9* Sprite9::create(const char* file, int u, int v, int w1, int w2, int w3, int h1, int h2, int h3){
 		lwassert(file);
 		bool ok = false;
-		Sprite9* pSprite9 = new Sprite9(file, uvX, uvY, uvW1, uvW2, uvW3, uvH1, uvH2, uvH3, ok);
+		Sprite9* pSprite9 = new Sprite9(file, u, v, w1, w2, w3, h1, h2, h3, ok);
 		lwassert(pSprite9);
 		if ( !ok ){
 			delete pSprite9;
@@ -496,26 +452,37 @@ namespace lw {
 		}
 		return pSprite9;
 	}
-	Sprite9::Sprite9(const char* file, int uvX, int uvY, int uvW1, int uvW2, int uvW3, int uvH1, int uvH2, int uvH3, bool& ok):_needUpdate(true), _is2x(false){
+    Sprite9* Sprite9::create(const char* atlasKey, int w1, int w2, int w3, int h1, int h2, int h3){
+		lwassert(atlasKey);
+		bool ok = false;
+		Sprite9* pSprite9 = new Sprite9(atlasKey, w1, w2, w3, h1, h2, h3, ok);
+		lwassert(pSprite9);
+		if ( !ok ){
+			delete pSprite9;
+			return NULL;
+		}
+		return pSprite9;
+	}
+	Sprite9::Sprite9(const char* file, int u, int v, int w1, int w2, int w3, int h1, int h2, int h3, bool& ok):_needUpdate(true){
         
 		_x[0] = 0.f;
 		_y[0] = 0.f;
         
-		_uvW[0] = uvW1;
-		_uvW[1] = uvW2;
-		_uvW[2] = uvW3;
+		_uvW[0] = w1;
+		_uvW[1] = w2;
+		_uvW[2] = w3;
         
-		_uvH[0] = uvH1;
-		_uvH[1] = uvH2;
-		_uvH[2] = uvH3;
+		_uvH[0] = h1;
+		_uvH[1] = h2;
+		_uvH[2] = h3;
         
-		_uvX[0] = uvX;
-		_uvX[1] = _uvX[0] + uvW1;
-		_uvX[2] = _uvX[1] + uvW2;
+		_uvX[0] = u;
+		_uvX[1] = _uvX[0] + w1;
+		_uvX[2] = _uvX[1] + w2;
         
-		_uvY[0] = uvY;
-		_uvY[1] = _uvY[0] + uvH1;
-		_uvY[2] = _uvY[1] + uvH2;
+		_uvY[0] = v;
+		_uvY[1] = _uvY[0] + h1;
+		_uvY[2] = _uvY[1] + h2;
         
 		_width = (float)(_uvW[0] + _uvW[1] + _uvW[2]);
 		_height = (float)(_uvH[0] + _uvH[1] + _uvH[2]);
@@ -529,10 +496,56 @@ namespace lw {
             }
             _pSprites[i]->setUV(_uvX[i/3], _uvY[i%3], _uvW[i/3], _uvH[i%3]);
         }
-        _is2x = _pSprites[0]->is2x();
         
 		ok = true;
 	}
+    
+    Sprite9::Sprite9(const char* atlasKey, int w1, int w2, int w3, int h1, int h2, int h3, bool& ok){
+        _needUpdate = true;
+        
+        _x[0] = 0.f;
+		_y[0] = 0.f;
+        
+		_uvW[0] = w1;
+		_uvW[1] = w2;
+		_uvW[2] = w3;
+        
+		_uvH[0] = h1;
+		_uvH[1] = h2;
+		_uvH[2] = h3;
+        
+        Sprite *pStp = Sprite::createFromAtlas(atlasKey);
+        if ( !pStp ){
+            lwerror("Sprite::createFromAtlas error");
+            return;
+        }
+        float u, v, w, h;
+        pStp->getUV(u, v, w, h);
+        
+		_uvX[0] = u;
+		_uvX[1] = _uvX[0] + w1;
+		_uvX[2] = _uvX[1] + w2;
+        
+		_uvY[0] = v;
+		_uvY[1] = _uvY[0] + h1;
+		_uvY[2] = _uvY[1] + h2;
+        
+		_width = (float)(_uvW[0] + _uvW[1] + _uvW[2]);
+		_height = (float)(_uvH[0] + _uvH[1] + _uvH[2]);
+        
+        memset(_pSprites, 0, sizeof(Sprite*)*9);
+        for ( int i = 0; i < 9; ++i ){
+            _pSprites[i] = Sprite::createFromAtlas(atlasKey);
+            if ( _pSprites[i] == NULL ){
+                lwerror("Sprite::create error: atlasKey=" <<atlasKey);
+                delete pStp;
+                return;
+            }
+            _pSprites[i]->setUV(_uvX[i/3], _uvY[i%3], _uvW[i/3], _uvH[i%3]);
+        }
+        delete pStp;
+		ok = true;
+    }
 	Sprite9::~Sprite9(){
 		for ( int i = 0; i < 9; ++i ){
             if ( _pSprites[i] )
@@ -625,4 +638,3 @@ namespace lw {
     }
     
 } //namespace lw
-
