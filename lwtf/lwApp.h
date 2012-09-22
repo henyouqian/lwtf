@@ -14,11 +14,14 @@ namespace lw {
         void draw();
         
         void getViewSize(float &w, float &h);
+        void getScreenSize(float &w, float &h);
         float getScreenScale();
         
     private:
-        void updateInfo();
         float _viewW, _viewH, _screenScale;
+        
+    public:
+        void setViewSize(float w, float h);
     };
     
 } //namespace lw

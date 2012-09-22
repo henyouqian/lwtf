@@ -44,10 +44,7 @@ namespace lw {
     
     SpriteVertexBuffer::SpriteVertexBuffer(){
         _vertices.reserve(VERTICIS_NUM_RESERVE);
-        std::vector<std::string> attrNames;
-        attrNames.push_back("position");
-        attrNames.push_back("uv");
-        _pShaderProg = ShaderProgramRes::create("sprite.vsh", "sprite.fsh", attrNames);
+        _pShaderProg = ShaderProgramRes::create("sprite.vsh", "sprite.fsh");
         _posLocation = _pShaderProg->getAttribLocation("a_position");
         _uvLocation = _pShaderProg->getAttribLocation("a_uv");
         _mvpMatLocation = _pShaderProg->getUniformLocation("u_mvpmat");
@@ -83,12 +80,10 @@ namespace lw {
         if ( _vertices.empty() ){
             return;
         }
+        _pShaderProg->use();
         cml::Matrix4 m;
 		float w, h;
-        App::s().getViewSize(w, h);
-        float screenScale = App::s().getScreenScale();
-        w *= screenScale;
-        h *= screenScale;
+        App::s().getScreenSize(w, h);
 		cml::matrix_orthographic_RH(m, 0.f, w, -h, 0.f, -1000.f, 1000.f, cml::z_clip_neg_one);
         glUniformMatrix4fv(_mvpMatLocation, 1, false, m.data());
         glUniform4f(_colorLocation, _currColor.r/255.f, _currColor.g/255.f, _currColor.b/255.f, _currColor.a/255.f);
@@ -99,7 +94,7 @@ namespace lw {
         //glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 		//glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
         glUniform1i(_samplerLocation, 0);
-        glDisable(GL_CULL_FACE);
+        glEnable(GL_CULL_FACE);
 		glDepthMask(GL_FALSE);
         if ( _currBlendMode == BLEND_NONE ){
 			glDisable(GL_BLEND);
@@ -119,8 +114,6 @@ namespace lw {
         glVertexAttribPointer(_posLocation, 3, GL_FLOAT, GL_FALSE, sizeof(SpriteVertex), p);
         glEnableVertexAttribArray(_uvLocation);
         glVertexAttribPointer(_uvLocation, 2, GL_FLOAT, GL_FALSE, sizeof(SpriteVertex), p+3*sizeof(float));
-        
-        _pShaderProg->use();
         
         glDrawArrays(GL_TRIANGLES, 0, _vertices.size());
         

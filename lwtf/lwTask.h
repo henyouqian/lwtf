@@ -51,6 +51,7 @@ namespace lw {
     
     void taskMain();
     void taskDraw();
+    void taskUpdateStatus();
     bool taskEvent(const lw::TouchEvent& evt);
     
 } //namespace lw

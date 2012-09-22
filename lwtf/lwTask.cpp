@@ -8,6 +8,7 @@ namespace lw {
         void add(Task* pTask);
         void main();
         void draw();
+        void updateState();
         bool hasRunningTask();
         bool event(const TouchEvent& evt);
         
@@ -45,8 +46,11 @@ namespace lw {
         for ( ; it != itend; ++it ){
             (*it)->draw();
         }
-        
-        it = _tasks.begin();
+    }
+    
+    void TaskMgr::updateState(){
+        std::list<Task*>::iterator it = _tasks.begin();
+        std::list<Task*>::iterator itend = _tasks.end();
         for ( ; it != itend; ++it ){
             (*it)->updateState();
         }
@@ -181,6 +185,10 @@ namespace lw {
     
     void taskDraw(){
         _taskMgr.draw();
+    }
+    
+    void taskUpdateStatus(){
+        _taskMgr.updateState();
     }
     
     bool taskEvent(const TouchEvent& evt){

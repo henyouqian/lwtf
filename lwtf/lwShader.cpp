@@ -10,7 +10,7 @@ namespace lw {
         std::map<std::string, ShaderProgramRes*> _shaderProgamResMap;
     }
     
-    ShaderProgramRes* ShaderProgramRes::create(const char *vertFile, const char *fragFile, std::vector<std::string>& attribNames){
+    ShaderProgramRes* ShaderProgramRes::create(const char *vertFile, const char *fragFile){
         bool ok = false;
         
         std::string key = vertFile;
@@ -20,7 +20,7 @@ namespace lw {
             it->second->retain();
             return it->second;
         }
-        ShaderProgramRes* p = new ShaderProgramRes(vertFile, fragFile, key.c_str(), attribNames, ok);
+        ShaderProgramRes* p = new ShaderProgramRes(vertFile, fragFile, key.c_str(), ok);
         if ( p ){
             if ( ok ){
                 _shaderProgamResMap[key] = p;
@@ -85,7 +85,7 @@ namespace lw {
         }
     }
     
-    ShaderProgramRes::ShaderProgramRes(const char *vertFile, const char *fragFile, const char *key, std::vector<std::string>& attribNames, bool &ok){
+    ShaderProgramRes::ShaderProgramRes(const char *vertFile, const char *fragFile, const char *key, bool &ok){
         ok = false;
         _program = 0;
         _key = key;
@@ -103,18 +103,6 @@ namespace lw {
         _program = glCreateProgram();
         glAttachShader(_program, vertShader);
         glAttachShader(_program, fragShader);
-        
-        
-        // Bind attribute locations.
-        for ( int i = 0; i < attribNames.size(); ++i ){
-            glBindAttribLocation(_program, i, attribNames[i].c_str());
-            GLenum error = glGetError();
-            if ( error ){
-                lwerror("glerr: " << error);
-                ok = false;
-                return;
-            }
-        }
         
         if (!linkProgram(_program)) {
             lwerror("Failed to link program: " << _program);

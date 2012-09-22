@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D00D1C091609E5D300AB1385 /* lwCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D00D1C071609E5D300AB1385 /* lwCamera.cpp */; };
+		D00D1C0A1609E5D300AB1385 /* lwCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = D00D1C081609E5D300AB1385 /* lwCamera.h */; };
 		D030879115EA40BA0031D5D4 /* lwTouchEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D030878D15EA40BA0031D5D4 /* lwTouchEvent.cpp */; };
 		D030879215EA40BA0031D5D4 /* lwTouchEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = D030878E15EA40BA0031D5D4 /* lwTouchEvent.h */; };
 		D03087AE15EA66230031D5D4 /* lwSound.mm in Sources */ = {isa = PBXBuildFile; fileRef = D03087AC15EA66230031D5D4 /* lwSound.mm */; };
@@ -171,6 +173,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D00D1C071609E5D300AB1385 /* lwCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwCamera.cpp; sourceTree = "<group>"; };
+		D00D1C081609E5D300AB1385 /* lwCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwCamera.h; sourceTree = "<group>"; };
 		D030878D15EA40BA0031D5D4 /* lwTouchEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lwTouchEvent.cpp; sourceTree = "<group>"; };
 		D030878E15EA40BA0031D5D4 /* lwTouchEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lwTouchEvent.h; sourceTree = "<group>"; };
 		D03087AC15EA66230031D5D4 /* lwSound.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = lwSound.mm; sourceTree = "<group>"; };
@@ -612,6 +616,8 @@
 				D0527AA415E68EA200191554 /* lwSingleton.h */,
 				D0527AA515E68EA200191554 /* lwUtil.h */,
 				D0527AAB15E68F0800191554 /* lwUtil.mm */,
+				D00D1C071609E5D300AB1385 /* lwCamera.cpp */,
+				D00D1C081609E5D300AB1385 /* lwCamera.h */,
 				D0CB112E15E68525003DF8B6 /* Supporting Files */,
 			);
 			path = lwtf;
@@ -790,6 +796,7 @@
 				D04B25BC15FF3D26002B64CD /* lwHTTPClient.h in Headers */,
 				D04B25DB1600B337002B64CD /* lwCheckbox.h in Headers */,
 				D0FC66A816044E04005955CC /* tinyxml2.h in Headers */,
+				D00D1C0A1609E5D300AB1385 /* lwCamera.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -873,6 +880,7 @@
 				D04B25BD15FF3D26002B64CD /* lwHTTPClient.mm in Sources */,
 				D04B25DA1600B337002B64CD /* lwCheckbox.cpp in Sources */,
 				D0FC66A716044E04005955CC /* tinyxml2.cpp in Sources */,
+				D00D1C091609E5D300AB1385 /* lwCamera.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

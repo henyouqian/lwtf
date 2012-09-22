@@ -8,14 +8,14 @@ namespace lw {
     
     class ShaderProgramRes : public Res{
     public:
-        static ShaderProgramRes* create(const char *vertFile, const char *fragFile, std::vector<std::string>& attribNames);
+        static ShaderProgramRes* create(const char *vertFile, const char *fragFile);
         
         int getUniformLocation(const char* name);
         int getAttribLocation(const char* name);
         void use();
         
     private:
-        ShaderProgramRes(const char *vertFile, const char *fragFile, const char *key, std::vector<std::string>& attribNames, bool &ok);
+        ShaderProgramRes(const char *vertFile, const char *fragFile, const char *key, bool &ok);
         ~ShaderProgramRes();
         
         GLuint _program;

@@ -8,9 +8,9 @@
 namespace lw {
     
     App::App(){
+        _screenScale = [UIScreen mainScreen].scale;
         spriteInit();
         soundInit();
-        updateInfo();
     }
 
     App::~App(){
@@ -19,7 +19,6 @@ namespace lw {
     }
 
     void App::main(){
-        updateInfo();
         taskMain();
     }
 
@@ -27,21 +26,25 @@ namespace lw {
         taskDraw();
         viewDraw();
         spriteFlush();
-    }
-    
-    void App::updateInfo(){
-        _screenScale = [UIScreen mainScreen].scale;
-        CGSize sz = [UIApplication sharedApplication].keyWindow.rootViewController.view.bounds.size;
-        _viewW = sz.width;
-        _viewH = sz.height;
+        taskUpdateStatus();
     }
     
     void App::getViewSize(float &w, float &h){
         w = _viewW; h = _viewH;
     }
     
+    void App::getScreenSize(float &w, float &h){
+        w = _viewW*_screenScale;
+        h = _viewH*_screenScale;
+    }
+    
     float App::getScreenScale(){
         return _screenScale;
+    }
+    
+    void App::setViewSize(float w, float h){
+        _viewW = w;
+        _viewH = h;
     }
 
 } //namespace lw
