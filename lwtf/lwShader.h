@@ -2,7 +2,6 @@
 #define __LW_SHADER_H__
 
 #include "lwtf/lwRes.h"
-#include <OpenGLES/ES2/gl.h>
 
 namespace lw {
     

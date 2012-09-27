@@ -42,7 +42,7 @@ namespace lw{
         void setBlendMode(BlendMode blendMode);
         void setMatrix(cml::Matrix3 m);
         void draw();
-        bool is2x();
+        GLuint getGlId();
         
     private:
         void uvInit();

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "lwSprite.h"
 #include "lwTexture.h"
-#include "lwShader.h"
+#include "lwEffects.h"
 #include "lwApp.h"
 #include "lwFileSys.h"
 #include "tinyxml2/tinyxml2.h"
@@ -34,7 +34,7 @@ namespace lw {
         Color _currColor;
         BlendMode _currBlendMode;
         GLuint _currTextureId;
-        ShaderProgramRes* _pShaderProg;
+        EffectsRes *_pEffects;
         int _posLocation;
         int _uvLocation;
         int _mvpMatLocation;
@@ -44,17 +44,17 @@ namespace lw {
     
     SpriteVertexBuffer::SpriteVertexBuffer(){
         _vertices.reserve(VERTICIS_NUM_RESERVE);
-        _pShaderProg = ShaderProgramRes::create("sprite.vsh", "sprite.fsh");
-        _posLocation = _pShaderProg->getAttribLocation("a_position");
-        _uvLocation = _pShaderProg->getAttribLocation("a_uv");
-        _mvpMatLocation = _pShaderProg->getUniformLocation("u_mvpmat");
-        _colorLocation = _pShaderProg->getUniformLocation("u_color");
-        _samplerLocation = _pShaderProg->getUniformLocation("u_texture");
+        _pEffects = EffectsRes::create("sprite.lwfx");
+        _posLocation = _pEffects->getLocationFromSemantic(EffectsRes::POSITION);
+        _uvLocation = _pEffects->getLocationFromSemantic(EffectsRes::UV0);
+        _mvpMatLocation = _pEffects->getLocationFromSemantic(EffectsRes::WORLDVIEWPROJ);
+        _colorLocation = _pEffects->getUniformLocation("u_color");
+        _samplerLocation = _pEffects->getUniformLocation("u_texture");
     }
     
     SpriteVertexBuffer::~SpriteVertexBuffer(){
-        if ( _pShaderProg ){
-            _pShaderProg->release();
+        if ( _pEffects ){
+            _pEffects->release();
         }
     }
     
@@ -80,7 +80,7 @@ namespace lw {
         if ( _vertices.empty() ){
             return;
         }
-        _pShaderProg->use();
+        _pEffects->use();
         cml::Matrix4 m;
 		float w, h;
         App::s().getScreenSize(w, h);
@@ -91,8 +91,8 @@ namespace lw {
         glEnable(GL_TEXTURE_2D);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, _currTextureId);
-        //glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-		//glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+        //glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+		//glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
         glUniform1i(_samplerLocation, 0);
         glEnable(GL_CULL_FACE);
 		glDepthMask(GL_FALSE);
@@ -431,6 +431,10 @@ namespace lw {
         
         _vertexPos[3][0] = p4[0];
 		_vertexPos[3][1] = -p4[1];
+    }
+    
+    GLuint Sprite::getGlId(){
+        return _pTextureRes->getGlId();
     }
     
     //===============================================
