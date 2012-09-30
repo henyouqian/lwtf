@@ -19,6 +19,7 @@ namespace lw {
     }
 
     void App::main(){
+        taskUpdateStatus();
         taskMain();
     }
 
@@ -26,7 +27,6 @@ namespace lw {
         taskDraw();
         viewDraw();
         spriteFlush();
-        taskUpdateStatus();
     }
     
     void App::getViewSize(float &w, float &h){
