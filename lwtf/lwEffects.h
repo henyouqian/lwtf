@@ -12,6 +12,9 @@ namespace lw {
             POSITION,
             NORMAL,
             UV0,
+            UV1,
+            UV2,
+            UV3,
             WORLDVIEWPROJ,
         };
         

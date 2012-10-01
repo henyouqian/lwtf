@@ -131,6 +131,12 @@ namespace lw {
                     locSmt.semantic = NORMAL;
                 }else if ( strcmp(semantic, "UV0") == 0 ){
                     locSmt.semantic = UV0;
+                }else if ( strcmp(semantic, "UV1") == 0 ){
+                    locSmt.semantic = UV1;
+                }else if ( strcmp(semantic, "UV2") == 0 ){
+                    locSmt.semantic = UV2;
+                }else if ( strcmp(semantic, "UV3") == 0 ){
+                    locSmt.semantic = UV3;
                 }else{
                     locSmt.semantic = UNKNOWN;
                 }
