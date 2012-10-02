@@ -60,6 +60,7 @@ namespace lw {
             delete p;
             return NULL;
         }
+        _resMap[file] = p;
         return p;
     }
     
