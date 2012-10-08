@@ -15,7 +15,9 @@ namespace lw {
             UV1,
             UV2,
             UV3,
+            WORLDVIEW,
             WORLDVIEWPROJ,
+            WORLDVIEWIT,
         };
         
         struct LocSmt{

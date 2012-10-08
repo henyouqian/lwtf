@@ -157,8 +157,12 @@ namespace lw {
             if ( locSmt.location == -1 ){
                 lwerror("glGetUniformLocation failed");
             }else{
-                if ( strcmp(semantic, "WORLDVIEWPROJ") == 0 ){
+                if ( strcmp(semantic, "WORLDVIEW") == 0 ){
+                    locSmt.semantic = WORLDVIEW;
+                }else if ( strcmp(semantic, "WORLDVIEWPROJ") == 0 ){
                     locSmt.semantic = WORLDVIEWPROJ;
+                }else if ( strcmp(semantic, "WORLDVIEWIT") == 0 ){
+                    locSmt.semantic = WORLDVIEWIT;
                 }else{
                     locSmt.semantic = UNKNOWN;
                 }
