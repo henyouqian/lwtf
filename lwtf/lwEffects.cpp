@@ -130,6 +130,10 @@ namespace lw {
                     locSmt.semantic = POSITION;
                 }else if ( strcmp(semantic, "NORMAL") == 0 ){
                     locSmt.semantic = NORMAL;
+                }else if ( strcmp(semantic, "BINORMAL") == 0 ){
+                    locSmt.semantic = BINORMAL;
+                }else if ( strcmp(semantic, "TANGENT") == 0 ){
+                    locSmt.semantic = TANGENT;
                 }else if ( strcmp(semantic, "UV0") == 0 ){
                     locSmt.semantic = UV0;
                 }else if ( strcmp(semantic, "UV1") == 0 ){

@@ -11,6 +11,8 @@ namespace lw {
             UNKNOWN,
             POSITION,
             NORMAL,
+            BINORMAL,
+            TANGENT,
             UV0,
             UV1,
             UV2,
